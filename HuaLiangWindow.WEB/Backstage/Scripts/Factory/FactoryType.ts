@@ -34,12 +34,6 @@ namespace HuaLiangWindow.Backstage {
                 setting.Required = "不能为空";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
-            MDMa.AddEvent("InputIntroduction", "invalid", function (e: Event) {
-                let element = e.target as HTMLTextAreaElement;
-                let setting: InvalidOptionsModel = new InvalidOptionsModel();
-                setting.Max = "长度不能超过" + element.maxLength;
-                common.InputInvalidEvent_Invalid(e, setting);
-            });
         }
         /**
          * 获得列表
@@ -76,9 +70,6 @@ namespace HuaLiangWindow.Backstage {
                     let Name = document.createElement("td");
                     Name.textContent = listM[i]["Name"];
                     Item.appendChild(Name);
-                    let Introduction = document.createElement("td");
-                    Introduction.textContent = listM[i]["Introduction"];
-                    Item.appendChild(Introduction);
                     let IfEnable = document.createElement("td");
                     IfEnable.textContent = listM[i]["IfEnable"] ? "启用" : "禁用";
                     Item.appendChild(IfEnable);
@@ -256,8 +247,6 @@ namespace HuaLiangWindow.Backstage {
         public ID: string;
         /*名称*/
         public Name: string;
-        /*简介*/
-        public Introduction: string;
         /*启用标识*/
         public IfEnable: boolean;
         /**
@@ -270,7 +259,6 @@ namespace HuaLiangWindow.Backstage {
                 data = {
                     ID: FactoryTypePage.PageData.ID,
                     Name: MDMa.GetInputValue("InputName"),
-                    Introduction: MDMa.GetInputValue("InputIntroduction"),
                     IfEnable: (MDMa.$("InputIfEnable") as HTMLInputElement).checked,
                 };
             }
