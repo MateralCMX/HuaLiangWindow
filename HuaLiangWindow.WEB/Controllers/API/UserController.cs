@@ -76,10 +76,10 @@ namespace HuaLiangWindow.WEB.Controllers.API
         /// <param name="ID">用户唯一标识</param>
         /// <returns>用户信息</returns>
         [HttpGet]
-        [Route("GetUserGroupByUserID")]
-        public MResultModel GetUserGroupByUserID(Guid UserID)
+        [Route("GetUserGroupInfoByUserID")]
+        public MResultModel GetUserGroupInfoByUserID(Guid UserID)
         {
-            List<V_UserGroup> listM = _bll.GetUserGroupByUserID(UserID);
+            List<V_UserGroup> listM = _bll.GetUserGroupInfoByUserID(UserID);
             return MResultModel<List<V_UserGroup>>.GetSuccessResultM(listM, "查询成功");
         }
         /// <summary>

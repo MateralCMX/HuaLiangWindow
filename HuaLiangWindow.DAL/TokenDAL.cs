@@ -19,7 +19,7 @@ namespace HuaLiangWindow.DAL
         /// </summary>
         /// <param name="userID">用户唯一标识</param>
         /// <returns>令牌信息</returns>
-        public List<T_Token> GetTokenByUserID(Guid userID)
+        public List<T_Token> GetTokenInfoByUserID(Guid userID)
         {
             List<T_Token> resM = _DB.T_Token.Where(m => m.FK_User == userID).ToList();
             return resM;

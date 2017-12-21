@@ -338,7 +338,7 @@ namespace HuaLiangWindow.BLL
         /// </summary>
         /// <param name="userID">用户唯一标识</param>
         /// <returns>用户组信息</returns>
-        public List<V_UserGroup> GetUserGroupByUserID(Guid userID)
+        public List<V_UserGroup> GetUserGroupInfoByUserID(Guid userID)
         {
             T_User userM = _dal.GetDBModelInfoByID(userID);
             Guid[] userGroupIDs = (from m in userM.T_UserGroup

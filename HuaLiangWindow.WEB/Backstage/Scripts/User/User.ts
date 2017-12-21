@@ -298,7 +298,7 @@ namespace HuaLiangWindow.Backstage {
         private static BtnSetUserGroupEvent_Click(e: MouseEvent) {
             let BtnElement = e.target as HTMLButtonElement;
             BtnElement.disabled = true;
-            let url = "api/User/GetUserGroupByUserID";
+            let url = "api/User/GetUserGroupInfoByUserID";
             let data = {
                 UserID: BtnElement.dataset.id
             };
@@ -336,7 +336,7 @@ namespace HuaLiangWindow.Backstage {
             if (!MTMa.IsNullOrUndefined(SearchUserGroupForm) && SearchUserGroupForm.checkValidity()) {
                 let BtnElement = e.target as HTMLButtonElement;
                 BtnElement.disabled = true;
-                let url = "api/UserGroup/GetUserGroupByName";
+                let url = "api/UserGroup/GetUserGroupInfoByName";
                 let data = {
                     Name: MDMa.GetInputValue("SearchUserGroupName")
                 };
