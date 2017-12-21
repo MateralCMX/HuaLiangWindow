@@ -39,6 +39,10 @@ namespace HuaLiangWindow.WEB
         /// 工厂类型信息操作
         /// </summary>
         public const string Permissions_FactoryTypeOperation = "FactoryTypeOperation";
+        /// <summary>
+        /// 工厂信息操作
+        /// </summary>
+        public const string Permissions_FactoryOperation = "FactoryOperation";
         #endregion
         /// <summary>
         /// 保存上传文件地址

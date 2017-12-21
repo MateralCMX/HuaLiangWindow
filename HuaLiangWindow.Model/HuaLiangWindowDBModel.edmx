@@ -25,6 +25,18 @@
           <Property Name="Contents" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_Factory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="FK_FactoryType" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="400" />
+          <Property Name="IfEnable" Type="bit" Nullable="false" />
+          <Property Name="IfDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_FactoryType">
           <Key>
             <PropertyRef Name="ID" />
@@ -110,6 +122,25 @@
           <Property Name="FK_UserGroup" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“HuaLiangWindowDB.dbo.V_Factory”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="V_Factory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="FK_FactoryType" />
+            <PropertyRef Name="FactoryTypeName" />
+            <PropertyRef Name="IfEnable" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="FK_FactoryType" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FactoryTypeName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="400" />
+          <Property Name="IfEnable" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“HuaLiangWindowDB.dbo.V_FactoryType”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="V_FactoryType">
           <Key>
@@ -190,6 +221,18 @@
           <Property Name="IfEnable" Type="bit" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_T_Factory_T_FactoryType">
+          <End Role="T_FactoryType" Type="Self.T_FactoryType" Multiplicity="1" />
+          <End Role="T_Factory" Type="Self.T_Factory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_FactoryType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Factory">
+              <PropertyRef Name="FK_FactoryType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_Permissions_T_Permissions">
           <End Role="T_Permissions" Type="Self.T_Permissions" Multiplicity="0..1" />
           <End Role="T_Permissions1" Type="Self.T_Permissions" Multiplicity="*" />
@@ -265,6 +308,7 @@
         <EntityContainer Name="StoreContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ApplicationLog" EntityType="Self.T_ApplicationLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Factory" EntityType="Self.T_Factory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_FactoryType" EntityType="Self.T_FactoryType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Permissions" EntityType="Self.T_Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Token" EntityType="Self.T_Token" Schema="dbo" store:Type="Tables" />
@@ -272,6 +316,17 @@
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserGroupPermissions" EntityType="Self.T_UserGroupPermissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserGroupUser" EntityType="Self.T_UserGroupUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V_Factory" EntityType="Self.V_Factory" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_Factory].[ID] AS [ID], 
+    [V_Factory].[Name] AS [Name], 
+    [V_Factory].[FK_FactoryType] AS [FK_FactoryType], 
+    [V_Factory].[FactoryTypeName] AS [FactoryTypeName], 
+    [V_Factory].[Remark] AS [Remark], 
+    [V_Factory].[IfEnable] AS [IfEnable], 
+    [V_Factory].[CreateTime] AS [CreateTime]
+    FROM [dbo].[V_Factory] AS [V_Factory]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_FactoryType" EntityType="Self.V_FactoryType" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [V_FactoryType].[ID] AS [ID], 
@@ -324,6 +379,10 @@
     [V_UserGroup].[CreateTime] AS [CreateTime]
     FROM [dbo].[V_UserGroup] AS [V_UserGroup]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_T_Factory_T_FactoryType" Association="Self.FK_T_Factory_T_FactoryType">
+            <End Role="T_FactoryType" EntitySet="T_FactoryType" />
+            <End Role="T_Factory" EntitySet="T_Factory" />
+          </AssociationSet>
           <AssociationSet Name="FK_T_Permissions_T_Permissions" Association="Self.FK_T_Permissions_T_Permissions">
             <End Role="T_Permissions" EntitySet="T_Permissions" />
             <End Role="T_Permissions1" EntitySet="T_Permissions" />
@@ -381,6 +440,12 @@
           </AssociationSet>
           <EntitySet Name="T_FactoryType" EntityType="HuaLiangWindowDBModel.T_FactoryType" />
           <EntitySet Name="V_FactoryType" EntityType="HuaLiangWindowDBModel.V_FactoryType" />
+          <EntitySet Name="T_Factory" EntityType="HuaLiangWindowDBModel.T_Factory" />
+          <EntitySet Name="V_Factory" EntityType="HuaLiangWindowDBModel.V_Factory" />
+          <AssociationSet Name="FK_T_Factory_T_FactoryType" Association="HuaLiangWindowDBModel.FK_T_Factory_T_FactoryType">
+            <End Role="T_FactoryType" EntitySet="T_FactoryType" />
+            <End Role="T_Factory" EntitySet="T_Factory" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -570,6 +635,7 @@
           <Property Name="IfEnable" Type="Boolean" Nullable="false" />
           <Property Name="IfDelete" Type="Boolean" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="T_Factory" Relationship="HuaLiangWindowDBModel.FK_T_Factory_T_FactoryType" FromRole="T_FactoryType" ToRole="T_Factory" />
         </EntityType>
         <EntityType Name="V_FactoryType">
           <Key>
@@ -583,6 +649,48 @@
           <Property Name="IfEnable" Type="Boolean" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="T_Factory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="FK_FactoryType" Type="Guid" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="IfEnable" Type="Boolean" Nullable="false" />
+          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="T_FactoryType" Relationship="HuaLiangWindowDBModel.FK_T_Factory_T_FactoryType" FromRole="T_Factory" ToRole="T_FactoryType" />
+        </EntityType>
+        <EntityType Name="V_Factory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="FK_FactoryType" />
+            <PropertyRef Name="FactoryTypeName" />
+            <PropertyRef Name="IfEnable" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="FK_FactoryType" Type="Guid" Nullable="false" />
+          <Property Name="FactoryTypeName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="IfEnable" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_T_Factory_T_FactoryType">
+          <End Type="HuaLiangWindowDBModel.T_FactoryType" Role="T_FactoryType" Multiplicity="1" />
+          <End Type="HuaLiangWindowDBModel.T_Factory" Role="T_Factory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_FactoryType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Factory">
+              <PropertyRef Name="FK_FactoryType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -755,6 +863,32 @@
               <MappingFragment StoreEntitySet="V_FactoryType">
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="IfEnable" ColumnName="IfEnable" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Factory">
+            <EntityTypeMapping TypeName="HuaLiangWindowDBModel.T_Factory">
+              <MappingFragment StoreEntitySet="T_Factory">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
+                <ScalarProperty Name="IfEnable" ColumnName="IfEnable" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="FK_FactoryType" ColumnName="FK_FactoryType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Factory">
+            <EntityTypeMapping TypeName="HuaLiangWindowDBModel.V_Factory">
+              <MappingFragment StoreEntitySet="V_Factory">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IfEnable" ColumnName="IfEnable" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="FactoryTypeName" ColumnName="FactoryTypeName" />
+                <ScalarProperty Name="FK_FactoryType" ColumnName="FK_FactoryType" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

@@ -12,60 +12,49 @@ using System.Web.Http;
 namespace HuaLiangWindow.WEB.Controllers.API
 {
     /// <summary>
-    /// 工厂类型API接口
+    /// 工厂API接口
     /// </summary>
-    [RoutePrefix("api/FactoryType")]
-    public class FactoryTypeController : ApiBaseController<FactoryTypeBLL>
+    [RoutePrefix("api/Factory")]
+    public class FactoryController : ApiBaseController<FactoryBLL>
     {
         /// <summary>
-        /// 根据类型获得工厂类型信息
+        /// 根据类型获得工厂信息
         /// </summary>
         /// <param name="Name">名称</param>
         /// <param name="Code">代码</param>
         /// <param name="IfEnable">启用标识</param>
         /// <param name="PageIndex">当前页数</param>
         /// <param name="PageSize">每页显示数量</param>
-        /// <returns>工厂类型信息</returns>
+        /// <returns>工厂信息</returns>
         [HttpGet]
-        [Route("GetFactoryTypeInfoByWhere")]
-        public MResultModel GetFactoryTypeInfoByWhere(string Name, bool? IfEnable, int PageIndex, int PageSize)
+        [Route("GetFactoryInfoByWhere")]
+        public MResultModel GetFactoryInfoByWhere(string Name, bool? IfEnable, int PageIndex, int PageSize)
         {
             MPagingModel pageM = new MPagingModel(PageIndex, PageSize);
-            List<V_FactoryType> listM = _bll.GetFactoryTypeInfoByWhere(Name, IfEnable, pageM);
-            return MResultPagingModel<List<V_FactoryType>>.GetSuccessResultM(listM, pageM, "查询成功");
+            List<V_Factory> listM = _bll.GetFactoryInfoByWhere(Name, IfEnable, pageM);
+            return MResultPagingModel<List<V_Factory>>.GetSuccessResultM(listM, pageM, "查询成功");
         }
         /// <summary>
-        /// 根据唯一标识获得工厂类型信息
+        /// 根据唯一标识获得工厂信息
         /// </summary>
         /// <param name="ID">唯一标识</param>
-        /// <returns>工厂类型信息</returns>
+        /// <returns>工厂信息</returns>
         [HttpGet]
-        [Route("GetFactoryTypeInfoByID")]
-        public MResultModel GetFactoryTypeInfoByID(Guid ID)
+        [Route("GetFactoryInfoByID")]
+        public MResultModel GetFactoryInfoByID(Guid ID)
         {
-            V_FactoryType resM = _bll.GetDBModelViewInfoByID(ID);
-            return MResultModel<V_FactoryType>.GetSuccessResultM(resM, "查询成功");
+            V_Factory resM = _bll.GetDBModelViewInfoByID(ID);
+            return MResultModel<V_Factory>.GetSuccessResultM(resM, "查询成功");
         }
         /// <summary>
-        /// 获得所有启用的工厂类型信息
-        /// </summary>
-        /// <returns>工厂类型信息</returns>
-        [HttpGet]
-        [Route("GetAllEnableFactoryTypeInfo")]
-        public MResultModel GetAllEnableFactoryTypeInfo()
-        {
-            List<V_FactoryType> resM = _bll.GetFactoryTypeInfoByEnable(true);
-            return MResultModel<List<V_FactoryType>>.GetSuccessResultM(resM, "查询成功");
-        }
-        /// <summary>
-        /// 添加工厂类型
+        /// 添加工厂
         /// </summary>
         /// <param name="model">操作对象</param>
         /// <returns>操作结果</returns>
         [HttpPost]
-        [Route("AddFactoryType")]
-        [PermissionsCode(ApplicationManager.Permissions_FactoryTypeOperation)]
-        public MResultModel AddFactoryType(EditFactoryTypeInModel model)
+        [Route("AddFactory")]
+        [PermissionsCode(ApplicationManager.Permissions_FactoryOperation)]
+        public MResultModel AddFactory(EditFactoryInModel model)
         {
             try
             {
@@ -78,14 +67,14 @@ namespace HuaLiangWindow.WEB.Controllers.API
             }
         }
         /// <summary>
-        /// 修改工厂类型
+        /// 修改工厂
         /// </summary>
         /// <param name="model">操作对象</param>
         /// <returns>操作结果</returns>
         [HttpPost]
-        [Route("EditFactoryType")]
-        [PermissionsCode(ApplicationManager.Permissions_FactoryTypeOperation)]
-        public MResultModel EditFactoryType(EditFactoryTypeInModel model)
+        [Route("EditFactory")]
+        [PermissionsCode(ApplicationManager.Permissions_FactoryOperation)]
+        public MResultModel EditFactory(EditFactoryInModel model)
         {
             try
             {
@@ -98,14 +87,14 @@ namespace HuaLiangWindow.WEB.Controllers.API
             }
         }
         /// <summary>
-        /// 删除工厂类型
+        /// 删除工厂
         /// </summary>
         /// <param name="model">操作对象</param>
         /// <returns>操作结果</returns>
         [HttpPost]
-        [Route("DeleteFactoryType")]
-        [PermissionsCode(ApplicationManager.Permissions_FactoryTypeOperation)]
-        public MResultModel DeleteFactoryType(DeleteInModel model)
+        [Route("DeleteFactory")]
+        [PermissionsCode(ApplicationManager.Permissions_FactoryOperation)]
+        public MResultModel DeleteFactory(DeleteInModel model)
         {
             try
             {

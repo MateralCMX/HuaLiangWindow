@@ -3,9 +3,9 @@
 /// <reference path="../../../lib/m-tools/m-tools.ts" />
 namespace HuaLiangWindow.Backstage {
     /**
-     * 工厂类型页面
+     * 工厂页面
      */
-    class FactoryTypePage {
+    class FactoryPage {
         /*页面数据*/
         public static PageData = {
             ID: null
@@ -15,7 +15,7 @@ namespace HuaLiangWindow.Backstage {
          */
         constructor() {
             if (common.IsLogin(true)) {
-                FactoryTypePage.GetList();
+                this.GetAllEnableFactoryTypeInfo();
                 this.BindEvent();
             }
         }
@@ -24,7 +24,7 @@ namespace HuaLiangWindow.Backstage {
          */
         private BindEvent() {
             MDMa.AddEvent("BtnSearch", "click", this.BtnSearchEvent_Click);
-            MDMa.AddEvent("BtnAdd", "click", FactoryTypePage.BtnAddEvent_Click);
+            MDMa.AddEvent("BtnAdd", "click", FactoryPage.BtnAddEvent_Click);
             MDMa.AddEvent("BtnSave", "click", this.BtnSaveEvent_Click);
             MDMa.AddEvent("BtnDelete", "click", this.BtnDeleteEvent_Click);
             MDMa.AddEvent("InputName", "invalid", function (e: Event) {
@@ -34,16 +34,46 @@ namespace HuaLiangWindow.Backstage {
                 setting.Required = "不能为空";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
+            MDMa.AddEvent("InputRemark", "invalid", function (e: Event) {
+                let element = e.target as HTMLInputElement;
+                let setting: InvalidOptionsModel = new InvalidOptionsModel();
+                setting.Max = "长度不能超过" + element.maxLength;
+                setting.Required = "不能为空";
+                common.InputInvalidEvent_Invalid(e, setting);
+            });
+        }
+        /**
+         * 获得所有启用的工厂类型信息
+         */
+        private GetAllEnableFactoryTypeInfo() {
+            let url: string = "api/FactoryType/GetAllEnableFactoryTypeInfo";
+            let data = FactorySearchModel.GetInputData();
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                let InputFactoryType = MDMa.$("InputFactoryType") as HTMLSelectElement;
+                InputFactoryType.innerHTML = "";
+                let listM = resM["Data"] as Array<any>;
+                for (var i = 0; i < listM.length; i++) {
+                    let option = new Option(listM[i]["Name"], listM[i]["ID"]);
+                    InputFactoryType.options.add(option);
+                }
+                FactoryPage.GetList();
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"])
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+            };
+            common.SendGetAjax(url, data, SFun, FFun, CFun);
         }
         /**
          * 获得列表
          */
         private static GetList() {
-            let url: string = "api/FactoryType/GetFactoryTypeInfoByWhere";
-            let data = FactoryTypeSearchModel.GetInputData();
+            let url: string = "api/Factory/GetFactoryInfoByWhere";
+            let data = FactorySearchModel.GetInputData();
             let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
-                FactoryTypePage.BindListInfo(resM["Data"]);
-                common.BindPageInfo(resM["PagingInfo"] as MPagingModel, FactoryTypePage.GetList);
+                FactoryPage.BindListInfo(resM["Data"]);
+                common.BindPageInfo(resM["PagingInfo"] as MPagingModel, FactoryPage.GetList);
             };
             let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 common.ShowMessageBox(resM["Message"])
@@ -68,6 +98,9 @@ namespace HuaLiangWindow.Backstage {
                     let Name = document.createElement("td");
                     Name.textContent = listM[i]["Name"];
                     Item.appendChild(Name);
+                    let Remark = document.createElement("td");
+                    Remark.textContent = listM[i]["Remark"];
+                    Item.appendChild(Remark);
                     let IfEnable = document.createElement("td");
                     IfEnable.textContent = listM[i]["IfEnable"] ? "启用" : "禁用";
                     Item.appendChild(IfEnable);
@@ -78,7 +111,7 @@ namespace HuaLiangWindow.Backstage {
                     MDMa.AddClass(EditBtn, "btn btn-default");
                     EditBtn.setAttribute("type", "button");
                     EditBtn.textContent = "编辑";
-                    MDMa.AddEvent(EditBtn, "click", FactoryTypePage.BtnEditEvent_Click);
+                    MDMa.AddEvent(EditBtn, "click", FactoryPage.BtnEditEvent_Click);
                     EditBtn.dataset.id = listM[i]["ID"];
                     OperationBtnGroup.appendChild(EditBtn);
                     let RemoveBtn = document.createElement("button");
@@ -87,7 +120,7 @@ namespace HuaLiangWindow.Backstage {
                     RemoveBtn.textContent = "删除";
                     RemoveBtn.dataset.toggle = "modal";
                     RemoveBtn.dataset.target = "#DeleteModal";
-                    MDMa.AddEvent(RemoveBtn, "click", FactoryTypePage.BtnRemoveEvent_Click);
+                    MDMa.AddEvent(RemoveBtn, "click", FactoryPage.BtnRemoveEvent_Click);
                     RemoveBtn.dataset.id = listM[i]["ID"];
                     OperationBtnGroup.appendChild(RemoveBtn);
                     Operation.appendChild(OperationBtnGroup);
@@ -103,7 +136,7 @@ namespace HuaLiangWindow.Backstage {
         private BtnSearchEvent_Click(e: MouseEvent) {
             common.PagingM.PageModel.PagingIndex = 1;
             common.PagingM.PageModel.PagingCount = 99;
-            FactoryTypePage.GetList();
+            FactoryPage.GetList();
         }
         /**
          * 新增按钮单击事件
@@ -113,7 +146,7 @@ namespace HuaLiangWindow.Backstage {
             common.ClearModalForm("EditModal");
             let EditModalLabel = MDMa.$("EditModalLabel") as HTMLHeadingElement;
             EditModalLabel.textContent = "新增";
-            FactoryTypePage.PageData.ID = null;
+            FactoryPage.PageData.ID = null;
         }
         /**
          * 编辑按钮单击事件
@@ -123,24 +156,24 @@ namespace HuaLiangWindow.Backstage {
             common.ClearModalForm("EditModal");
             let EditModalLabel = MDMa.$("EditModalLabel") as HTMLHeadingElement;
             EditModalLabel.textContent = "新增";
-            FactoryTypePage.PageData.ID = btnElement.dataset.id;
-            FactoryTypePage.GetFactoryTypeInfoByID();
+            FactoryPage.PageData.ID = btnElement.dataset.id;
+            FactoryPage.GetFactoryInfoByID();
         }
         /**
          * 移除按钮单击事件
          */
         private static BtnRemoveEvent_Click(e: MouseEvent) {
             let btnElement = e.target as HTMLButtonElement;
-            FactoryTypePage.PageData.ID = btnElement.dataset.id;
+            FactoryPage.PageData.ID = btnElement.dataset.id;
         }
         /**
-         * 根据ID获得工厂类型信息
+         * 根据ID获得工厂信息
          * @param ID
          */
-        private static GetFactoryTypeInfoByID() {
-            let url = "api/FactoryType/GetFactoryTypeInfoByID";
+        private static GetFactoryInfoByID() {
+            let url = "api/Factory/GetFactoryInfoByID";
             let data = {
-                ID: FactoryTypePage.PageData.ID
+                ID: FactoryPage.PageData.ID
             };
             let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 let perM = resM["Data"];
@@ -160,20 +193,20 @@ namespace HuaLiangWindow.Backstage {
          */
         private BtnSaveEvent_Click(e: MouseEvent) {
             common.ClearErrorMessage();
-            let data = FactoryTypeInputModel.GetInputData();
+            let data = FactoryInputModel.GetInputData();
             if (data != null) {
                 let BtnElement = e.target as HTMLButtonElement;
                 BtnElement.textContent = "保存中......";
                 BtnElement.disabled = true;
                 let url: string;
-                if (MTMa.IsNullOrUndefinedOrEmpty(FactoryTypePage.PageData.ID)) {
-                    url = "api/FactoryType/AddFactoryType";
+                if (MTMa.IsNullOrUndefinedOrEmpty(FactoryPage.PageData.ID)) {
+                    url = "api/Factory/AddFactory";
                 }
                 else {
-                    url = "api/FactoryType/EditFactoryType";
+                    url = "api/Factory/EditFactory";
                 }
                 let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
-                    FactoryTypePage.GetList();
+                    FactoryPage.GetList();
                     $('#EditModal').modal('toggle');
                 };
                 let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
@@ -194,13 +227,13 @@ namespace HuaLiangWindow.Backstage {
             let BtnElement = e.target as HTMLButtonElement;
             BtnElement.textContent = "删除中......";
             BtnElement.disabled = true;
-            let url = "api/FactoryType/DeleteFactoryType";
+            let url = "api/Factory/DeleteFactory";
             let data = {
-                ID: FactoryTypePage.PageData.ID
+                ID: FactoryPage.PageData.ID
             };
             let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 $('#DeleteModal').modal('toggle');
-                FactoryTypePage.GetList();
+                FactoryPage.GetList();
             };
             let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 common.ShowMessageBox(resM["Message"]);
@@ -213,9 +246,9 @@ namespace HuaLiangWindow.Backstage {
         }
     }
     /**
-     * 工厂类型查询模型
+     * 工厂查询模型
      */
-    class FactoryTypeSearchModel {
+    class FactorySearchModel {
         /*名称*/
         public Name: string;
         /*启用标识*/
@@ -227,8 +260,8 @@ namespace HuaLiangWindow.Backstage {
         /**
          * 获得输入模型
          */
-        public static GetInputData(): FactoryTypeSearchModel {
-            let data: FactoryTypeSearchModel = {
+        public static GetInputData(): FactorySearchModel {
+            let data: FactorySearchModel = {
                 Name: MDMa.GetInputValue("SearchName"),
                 IfEnable: MDMa.GetInputValue("SearchIfEnable"),
                 PageIndex: common.PagingM.PageModel.PagingIndex,
@@ -238,26 +271,32 @@ namespace HuaLiangWindow.Backstage {
         }
     }
     /**
-     * 工厂类型输入模型
+     * 工厂输入模型
      */
-    class FactoryTypeInputModel {
+    class FactoryInputModel {
         /*唯一标识*/
         public ID: string;
         /*名称*/
         public Name: string;
+        /*所属工厂类型*/
+        public FK_FactoryType: string;
         /*启用标识*/
         public IfEnable: boolean;
+        /*备注*/
+        public Remark: string;
         /**
          * 获得输入模型
          */
-        public static GetInputData(): FactoryTypeInputModel {
-            let data: FactoryTypeInputModel = null;
+        public static GetInputData(): FactoryInputModel {
+            let data: FactoryInputModel = null;
             let InputForm = document.forms["InputForm"] as HTMLFormElement;
             if (!MTMa.IsNullOrUndefined(InputForm) && InputForm.checkValidity()) {
                 data = {
-                    ID: FactoryTypePage.PageData.ID,
+                    ID: FactoryPage.PageData.ID,
                     Name: MDMa.GetInputValue("InputName"),
+                    FK_FactoryType: MDMa.GetInputValue("InputFactoryType"),
                     IfEnable: (MDMa.$("InputIfEnable") as HTMLInputElement).checked,
+                    Remark: MDMa.GetInputValue("InputRemark"),
                 };
             }
             return data;
@@ -265,6 +304,6 @@ namespace HuaLiangWindow.Backstage {
     }
     /*页面加载完成时触发*/
     MDMa.AddEvent(window, "load", function () {
-        let pageM = new FactoryTypePage();
+        let pageM = new FactoryPage();
     });
 }

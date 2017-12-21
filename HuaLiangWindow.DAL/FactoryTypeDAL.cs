@@ -41,5 +41,18 @@ namespace HuaLiangWindow.DAL
             }
             return listM;
         }
+        /// <summary>
+        /// 根据启用状态获得工厂类型信息
+        /// </summary>
+        /// <param name="ifEnable">启用标识</param>
+        /// <returns>工厂类型信息</returns>
+        public List<V_FactoryType> GetFactoryTypeInfoByEnable(bool ifEnable)
+        {
+            List<V_FactoryType> listM = (from m in _DB.V_FactoryType
+                                         where m.IfEnable == ifEnable
+                                         orderby m.CreateTime
+                                         select m).ToList();
+            return listM;
+        }
     }
 }

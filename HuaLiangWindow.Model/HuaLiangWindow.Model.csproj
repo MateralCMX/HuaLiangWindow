@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="ApplicationLogModel.cs" />
     <Compile Include="BaseModel.cs" />
+    <Compile Include="FactoryModel.cs" />
     <Compile Include="HuaLiangWindowDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -65,6 +66,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HuaLiangWindowDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="T_Factory.cs">
+      <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="T_FactoryType.cs">
       <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
@@ -93,6 +97,9 @@
       <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserModel.cs" />
+    <Compile Include="V_Factory.cs">
+      <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="V_FactoryType.cs">
       <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
     </Compile>

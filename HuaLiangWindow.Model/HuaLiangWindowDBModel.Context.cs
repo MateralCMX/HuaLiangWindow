@@ -36,5 +36,7 @@ namespace HuaLiangWindow.Model
         public virtual DbSet<V_UserGroup> V_UserGroup { get; set; }
         public virtual DbSet<T_FactoryType> T_FactoryType { get; set; }
         public virtual DbSet<V_FactoryType> V_FactoryType { get; set; }
+        public virtual DbSet<T_Factory> T_Factory { get; set; }
+        public virtual DbSet<V_Factory> V_Factory { get; set; }
     }
 }

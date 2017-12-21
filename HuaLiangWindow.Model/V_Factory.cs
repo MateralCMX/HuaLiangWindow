@@ -12,21 +12,14 @@ namespace HuaLiangWindow.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class T_FactoryType
+    public partial class V_Factory
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public T_FactoryType()
-        {
-            this.T_Factory = new HashSet<T_Factory>();
-        }
-    
         public System.Guid ID { get; set; }
         public string Name { get; set; }
+        public System.Guid FK_FactoryType { get; set; }
+        public string FactoryTypeName { get; set; }
+        public string Remark { get; set; }
         public bool IfEnable { get; set; }
-        public bool IfDelete { get; set; }
         public System.DateTime CreateTime { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_Factory> T_Factory { get; set; }
     }
 }

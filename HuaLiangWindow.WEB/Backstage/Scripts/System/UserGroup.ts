@@ -55,20 +55,18 @@ namespace HuaLiangWindow.Backstage {
          * 获得列表
          */
         private static GetList() {
-            if (common.PagingM.PageModel.PagingIndex <= common.PagingM.PageModel.PagingCount) {
-                let url: string = "api/UserGroup/GetUserGroupInfoByWhere";
-                let data = UserGroupSearchModel.GetInputData();
-                let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
-                    UserGroupPage.BindListInfo(resM["Data"]);
-                    common.BindPageInfo(resM["PagingInfo"] as MPagingModel, UserGroupPage.GetList);
-                };
-                let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
-                    common.ShowMessageBox(resM["Message"])
-                };
-                let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
-                };
-                common.SendGetAjax(url, data, SFun, FFun, CFun);
-            }
+            let url: string = "api/UserGroup/GetUserGroupInfoByWhere";
+            let data = UserGroupSearchModel.GetInputData();
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                UserGroupPage.BindListInfo(resM["Data"]);
+                common.BindPageInfo(resM["PagingInfo"] as MPagingModel, UserGroupPage.GetList);
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"])
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+            };
+            common.SendGetAjax(url, data, SFun, FFun, CFun);
         }
         /**
          * 绑定列表信息

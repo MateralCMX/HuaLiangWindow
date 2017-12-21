@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FactoryBLL.cs" />
     <Compile Include="FactoryTypeBLL.cs" />
     <Compile Include="UserGroupBLL.cs" />
     <Compile Include="TokenBLL.cs" />
