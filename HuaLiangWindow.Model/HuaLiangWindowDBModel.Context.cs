@@ -29,7 +29,6 @@ namespace HuaLiangWindow.Model
         public virtual DbSet<T_ApplicationLog> T_ApplicationLog { get; set; }
         public virtual DbSet<T_Permissions> T_Permissions { get; set; }
         public virtual DbSet<T_Token> T_Token { get; set; }
-        public virtual DbSet<T_User> T_User { get; set; }
         public virtual DbSet<T_UserGroup> T_UserGroup { get; set; }
         public virtual DbSet<V_Permissions> V_Permissions { get; set; }
         public virtual DbSet<V_User> V_User { get; set; }
@@ -38,5 +37,6 @@ namespace HuaLiangWindow.Model
         public virtual DbSet<V_FactoryType> V_FactoryType { get; set; }
         public virtual DbSet<T_Factory> T_Factory { get; set; }
         public virtual DbSet<V_Factory> V_Factory { get; set; }
+        public virtual DbSet<T_User> T_User { get; set; }
     }
 }

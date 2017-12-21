@@ -86,15 +86,15 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Mobile" Type="varchar" MaxLength="11" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mobile" Type="varchar" MaxLength="11" Nullable="false" />
           <Property Name="WeChatOpenID" Type="varchar" MaxLength="100" />
           <Property Name="WeChatWorkUserID" Type="varchar" MaxLength="100" />
-          <Property Name="Email" Type="varchar" MaxLength="100" />
-          <Property Name="Password" Type="char" MaxLength="32" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="char" MaxLength="32" Nullable="false" />
           <Property Name="HeadPortrait" Type="varchar" MaxLength="300" />
           <Property Name="TrueName" Type="nvarchar" MaxLength="50" />
-          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RegisterSources" Type="tinyint" Nullable="false" />
           <Property Name="Sex" Type="tinyint" Nullable="false" />
           <Property Name="IfEnable" Type="bit" Nullable="false" />
@@ -458,7 +458,6 @@
           <EntitySet Name="T_ApplicationLog" EntityType="HuaLiangWindowDBModel.T_ApplicationLog" />
           <EntitySet Name="T_Permissions" EntityType="HuaLiangWindowDBModel.T_Permissions" />
           <EntitySet Name="T_Token" EntityType="HuaLiangWindowDBModel.T_Token" />
-          <EntitySet Name="T_User" EntityType="HuaLiangWindowDBModel.T_User" />
           <EntitySet Name="T_UserGroup" EntityType="HuaLiangWindowDBModel.T_UserGroup" />
           <EntitySet Name="V_Permissions" EntityType="HuaLiangWindowDBModel.V_Permissions" />
           <EntitySet Name="V_User" EntityType="HuaLiangWindowDBModel.V_User" />
@@ -467,16 +466,8 @@
             <End Role="T_Permissions" EntitySet="T_Permissions" />
             <End Role="T_Permissions1" EntitySet="T_Permissions" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_Token_T_User" Association="HuaLiangWindowDBModel.FK_T_Token_T_User">
-            <End Role="T_User" EntitySet="T_User" />
-            <End Role="T_Token" EntitySet="T_Token" />
-          </AssociationSet>
           <AssociationSet Name="T_UserGroupPermissions" Association="HuaLiangWindowDBModel.T_UserGroupPermissions">
             <End Role="T_Permissions" EntitySet="T_Permissions" />
-            <End Role="T_UserGroup" EntitySet="T_UserGroup" />
-          </AssociationSet>
-          <AssociationSet Name="T_UserGroupUser" Association="HuaLiangWindowDBModel.T_UserGroupUser">
-            <End Role="T_User" EntitySet="T_User" />
             <End Role="T_UserGroup" EntitySet="T_UserGroup" />
           </AssociationSet>
           <EntitySet Name="T_FactoryType" EntityType="HuaLiangWindowDBModel.T_FactoryType" />
@@ -487,9 +478,18 @@
             <End Role="T_FactoryType" EntitySet="T_FactoryType" />
             <End Role="T_Factory" EntitySet="T_Factory" />
           </AssociationSet>
+          <EntitySet Name="T_User" EntityType="HuaLiangWindowDBModel.T_User" />
+          <AssociationSet Name="FK_T_Token_T_User" Association="HuaLiangWindowDBModel.FK_T_Token_T_User">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_Token" EntitySet="T_Token" />
+          </AssociationSet>
           <AssociationSet Name="T_FactoryUser" Association="HuaLiangWindowDBModel.T_FactoryUser">
             <End Role="T_Factory" EntitySet="T_Factory" />
             <End Role="T_User" EntitySet="T_User" />
+          </AssociationSet>
+          <AssociationSet Name="T_UserGroupUser" Association="HuaLiangWindowDBModel.T_UserGroupUser">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_UserGroup" EntitySet="T_UserGroup" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="sysdiagrams">
@@ -541,29 +541,6 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TokenType" Type="Byte" Nullable="false" />
           <NavigationProperty Name="T_User" Relationship="HuaLiangWindowDBModel.FK_T_Token_T_User" FromRole="T_Token" ToRole="T_User" />
-        </EntityType>
-        <EntityType Name="T_User">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Guid" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Mobile" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="WeChatOpenID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="WeChatWorkUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="32" FixedLength="true" Unicode="false" />
-          <Property Name="HeadPortrait" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="TrueName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RegisterSources" Type="Byte" Nullable="false" />
-          <Property Name="Sex" Type="Byte" Nullable="false" />
-          <Property Name="IfEnable" Type="Boolean" Nullable="false" />
-          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="T_Token" Relationship="HuaLiangWindowDBModel.FK_T_Token_T_User" FromRole="T_User" ToRole="T_Token" />
-          <NavigationProperty Name="T_UserGroup" Relationship="HuaLiangWindowDBModel.T_UserGroupUser" FromRole="T_User" ToRole="T_UserGroup" />
-          <NavigationProperty Name="T_Factory" Relationship="HuaLiangWindowDBModel.T_FactoryUser" FromRole="T_User" ToRole="T_Factory" />
         </EntityType>
         <EntityType Name="T_UserGroup">
           <Key>
@@ -652,24 +629,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_Token_T_User">
-          <End Type="HuaLiangWindowDBModel.T_User" Role="T_User" Multiplicity="1" />
-          <End Type="HuaLiangWindowDBModel.T_Token" Role="T_Token" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="T_Token">
-              <PropertyRef Name="FK_User" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="T_UserGroupPermissions">
           <End Type="HuaLiangWindowDBModel.T_Permissions" Role="T_Permissions" Multiplicity="*" />
-          <End Type="HuaLiangWindowDBModel.T_UserGroup" Role="T_UserGroup" Multiplicity="*" />
-        </Association>
-        <Association Name="T_UserGroupUser">
-          <End Type="HuaLiangWindowDBModel.T_User" Role="T_User" Multiplicity="*" />
           <End Type="HuaLiangWindowDBModel.T_UserGroup" Role="T_UserGroup" Multiplicity="*" />
         </Association>
         <EntityType Name="T_FactoryType">
@@ -738,9 +699,48 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="T_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="WeChatOpenID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WeChatWorkUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
+          <Property Name="HeadPortrait" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="TrueName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterSources" Type="Byte" Nullable="false" />
+          <Property Name="Sex" Type="Byte" Nullable="false" />
+          <Property Name="IfEnable" Type="Boolean" Nullable="false" />
+          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="T_Token" Relationship="HuaLiangWindowDBModel.FK_T_Token_T_User" FromRole="T_User" ToRole="T_Token" />
+          <NavigationProperty Name="T_Factory" Relationship="HuaLiangWindowDBModel.T_FactoryUser" FromRole="T_User" ToRole="T_Factory" />
+          <NavigationProperty Name="T_UserGroup" Relationship="HuaLiangWindowDBModel.T_UserGroupUser" FromRole="T_User" ToRole="T_UserGroup" />
+        </EntityType>
+        <Association Name="FK_T_Token_T_User">
+          <End Type="HuaLiangWindowDBModel.T_User" Role="T_User" Multiplicity="1" />
+          <End Type="HuaLiangWindowDBModel.T_Token" Role="T_Token" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Token">
+              <PropertyRef Name="FK_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="T_FactoryUser">
           <End Type="HuaLiangWindowDBModel.T_Factory" Role="T_Factory" Multiplicity="*" />
           <End Type="HuaLiangWindowDBModel.T_User" Role="T_User" Multiplicity="*" />
+        </Association>
+        <Association Name="T_UserGroupUser">
+          <End Type="HuaLiangWindowDBModel.T_User" Role="T_User" Multiplicity="*" />
+          <End Type="HuaLiangWindowDBModel.T_UserGroup" Role="T_UserGroup" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -794,27 +794,6 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="FK_User" ColumnName="FK_User" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_User">
-            <EntityTypeMapping TypeName="HuaLiangWindowDBModel.T_User">
-              <MappingFragment StoreEntitySet="T_User">
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
-                <ScalarProperty Name="IfEnable" ColumnName="IfEnable" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="RegisterSources" ColumnName="RegisterSources" />
-                <ScalarProperty Name="NickName" ColumnName="NickName" />
-                <ScalarProperty Name="TrueName" ColumnName="TrueName" />
-                <ScalarProperty Name="HeadPortrait" ColumnName="HeadPortrait" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="WeChatWorkUserID" ColumnName="WeChatWorkUserID" />
-                <ScalarProperty Name="WeChatOpenID" ColumnName="WeChatOpenID" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -890,14 +869,6 @@
               <ScalarProperty Name="ID" ColumnName="FK_Permissions" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="T_UserGroupUser" TypeName="HuaLiangWindowDBModel.T_UserGroupUser" StoreEntitySet="T_UserGroupUser">
-            <EndProperty Name="T_UserGroup">
-              <ScalarProperty Name="ID" ColumnName="FK_UserGroup" />
-            </EndProperty>
-            <EndProperty Name="T_User">
-              <ScalarProperty Name="ID" ColumnName="FK_User" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="T_FactoryType">
             <EntityTypeMapping TypeName="HuaLiangWindowDBModel.T_FactoryType">
               <MappingFragment StoreEntitySet="T_FactoryType">
@@ -945,12 +916,41 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_User">
+            <EntityTypeMapping TypeName="HuaLiangWindowDBModel.T_User">
+              <MappingFragment StoreEntitySet="T_User">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
+                <ScalarProperty Name="IfEnable" ColumnName="IfEnable" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="RegisterSources" ColumnName="RegisterSources" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="TrueName" ColumnName="TrueName" />
+                <ScalarProperty Name="HeadPortrait" ColumnName="HeadPortrait" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="WeChatWorkUserID" ColumnName="WeChatWorkUserID" />
+                <ScalarProperty Name="WeChatOpenID" ColumnName="WeChatOpenID" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="T_FactoryUser" TypeName="HuaLiangWindowDBModel.T_FactoryUser" StoreEntitySet="T_FactoryUser">
             <EndProperty Name="T_User">
               <ScalarProperty Name="ID" ColumnName="FK_User" />
             </EndProperty>
             <EndProperty Name="T_Factory">
               <ScalarProperty Name="ID" ColumnName="FK_Factory" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="T_UserGroupUser" TypeName="HuaLiangWindowDBModel.T_UserGroupUser" StoreEntitySet="T_UserGroupUser">
+            <EndProperty Name="T_UserGroup">
+              <ScalarProperty Name="ID" ColumnName="FK_UserGroup" />
+            </EndProperty>
+            <EndProperty Name="T_User">
+              <ScalarProperty Name="ID" ColumnName="FK_User" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
