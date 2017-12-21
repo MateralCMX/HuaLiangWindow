@@ -66,6 +66,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HuaLiangWindowDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="T_FactoryType.cs">
+      <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FactoryTypeModel.cs" />
     <Compile Include="UserGroupModel.cs" />
     <Compile Include="PermissionsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +93,9 @@
       <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserModel.cs" />
+    <Compile Include="V_FactoryType.cs">
+      <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="V_Permissions.cs">
       <DependentUpon>HuaLiangWindowDBModel.tt</DependentUpon>
     </Compile>

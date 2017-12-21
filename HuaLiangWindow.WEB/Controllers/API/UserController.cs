@@ -121,6 +121,7 @@ namespace HuaLiangWindow.WEB.Controllers.API
         /// <returns>操作结果</returns>
         [HttpPost]
         [Route("AddUser")]
+        [PermissionsCode(ApplicationManager.Permissions_UserOperation)]
         public MResultModel AddUser(EditUserInModel model)
         {
             try
@@ -180,6 +181,7 @@ namespace HuaLiangWindow.WEB.Controllers.API
         /// <returns></returns>
         [HttpPost]
         [Route("GetMenuInfoByLoginUser")]
+        [PermissionsCode(ApplicationManager.Permissions_AdminLogin)]
         public MResultModel GetMenuInfoByLoginUser(BaseQueryModel model)
         {
             PermissionsGroupModel resM = _bll.GetMenuPermissionsInfoByUserID(model.LoginUserID);
@@ -238,6 +240,7 @@ namespace HuaLiangWindow.WEB.Controllers.API
         /// <returns>修改结果</returns>
         [HttpPost]
         [Route("AddUserGroup")]
+        [PermissionsCode(ApplicationManager.Permissions_UserOperation)]
         public MResultModel AddUserGroup(EditUserGroupUserInModel model)
         {
             try
@@ -261,6 +264,7 @@ namespace HuaLiangWindow.WEB.Controllers.API
         /// <returns>修改结果</returns>
         [HttpPost]
         [Route("RemoveUserGroup")]
+        [PermissionsCode(ApplicationManager.Permissions_UserOperation)]
         public MResultModel RemoveUserGroup(EditUserGroupUserInModel model)
         {
             try

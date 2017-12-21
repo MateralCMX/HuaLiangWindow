@@ -68,14 +68,13 @@ namespace HuaLiangWindow.BLL
             }
         }
         /// <summary>
-        /// 添加一个用户组对象(后台添加)
+        /// 添加一个用户组对象
         /// </summary>
         /// <param name="model">用户组对象</param>
         /// <exception cref="ArgumentException"></exception>
         public void Add(T_UserGroup model)
         {
             DateTime dt = DateTime.Now;
-            model.ID = Guid.NewGuid();
             model.IfDelete = false;
             model.CreateTime = dt;
             string msg = "";

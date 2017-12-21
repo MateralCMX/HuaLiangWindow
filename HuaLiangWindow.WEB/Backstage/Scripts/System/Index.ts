@@ -226,48 +226,6 @@ namespace HuaLiangWindow.Backstage {
             };
             common.SendPostAjax(url, data, SFun, FFun, CFun);
         }
-        ///**
-        // * 根据用户ID获得权限信息
-        // */
-        //private GetMenuRightsThreeInfoByUserID() {
-        //    let url: string = "api/User/GetMenuRightsThreeInfoByUserID";
-        //    let data = {};
-        //    let SFun = function (resM: Object) {
-        //        //IndexPage.PageData.RightsM = resM["Data"];
-        //        //let TopNav = MDMa.$("TopNav");
-        //        //TopNav.innerHTML = "";
-        //        //for (let i = 0; i < IndexPage.PageData.RightsM.length; i++) {
-        //        //    let li = document.createElement("li");
-        //        //    let a = document.createElement("a");
-        //        //    if (IndexPage.PageData.RightsM[i]["Ico"] != null) {
-        //        //        let ico = document.createElement("i");
-        //        //        MDMa.AddClass(ico, IndexPage.PageData.RightsM[i]["Ico"]);
-        //        //        a.appendChild(ico);
-        //        //    }
-        //        //    a.appendChild(document.createTextNode(IndexPage.PageData.RightsM[i].Name));
-        //        //    a.dataset.topid = "TopNav";
-        //        //    if (IndexPage.PageData.RightsM[i].Items == null) {
-        //        //        a.dataset.href = IndexPage.PageData.RightsM[i]["Code"];
-        //        //        MDMa.AddEvent(a, "click", function (e) {
-        //        //            IndexPage.OpenIFramePage(e);
-        //        //            MDMa.AddClass("MainPanel", "NoLeft");
-        //        //        });
-        //        //    }
-        //        //    else {
-        //        //        a.dataset.index = i.toString();
-        //        //        MDMa.AddEvent(a, "click", IndexPage.BindLeftMenu);
-        //        //    }
-        //        //    li.appendChild(a);
-        //        //    TopNav.appendChild(li);
-        //        //}
-        //    };
-        //    let FFun = function (xhr: XMLHttpRequest, resM: Object) {
-        //        common.ShowMessageBox("操作失败,您的权限不足", 3);
-        //    };
-        //    let CFun = function (resM: Object) {
-        //    };
-        //    common.SendAjax(url, data, SFun, EFun, CFun);
-        //}
         /**
          * 打开左部页面
          * @param e

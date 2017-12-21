@@ -84,7 +84,7 @@ namespace HuaLiangWindow.DAL
         /// <returns></returns>
         protected T BeforeInsert(T model)
         {
-            return BaseDAL.GetBeforeInsertModel(model, _idName);
+            return GetBeforeInsertModel(model, _idName);
         }
         /// <summary>
         /// 根据主键获得数据模型对象信息

@@ -65,6 +65,7 @@ namespace HuaLiangWindow.WEB.Controllers.API
         /// <returns>操作结果</returns>
         [HttpPost]
         [Route("AddUserGroup")]
+        [PermissionsCode(ApplicationManager.Permissions_UserGroupOperation)]
         public MResultModel AddUserGroup(EditUserGroupInModel model)
         {
             try

@@ -168,7 +168,6 @@ namespace HuaLiangWindow.BLL
         public void Add(T_User model)
         {
             DateTime dt = DateTime.Now;
-            model.ID = Guid.NewGuid();
             model.IfDelete = false;
             model.CreateTime = dt;
             model.Password = EncryptionManager.MD5Encode_32(DEFUALTPASSWORD);
@@ -192,7 +191,6 @@ namespace HuaLiangWindow.BLL
         public void WeChatAdd(T_User model)
         {
             DateTime dt = DateTime.Now;
-            model.ID = Guid.NewGuid();
             model.IfDelete = false;
             model.CreateTime = dt;
             model.Password = EncryptionManager.MD5Encode_32(DEFUALTPASSWORD);

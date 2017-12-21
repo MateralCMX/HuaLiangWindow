@@ -68,14 +68,13 @@ namespace HuaLiangWindow.BLL
             }
         }
         /// <summary>
-        /// 添加一个权限对象(后台添加)
+        /// 添加一个权限对象
         /// </summary>
         /// <param name="model">权限对象</param>
         /// <exception cref="ArgumentException"></exception>
         public void Add(T_Permissions model)
         {
             DateTime dt = DateTime.Now;
-            model.ID = Guid.NewGuid();
             model.IfDelete = false;
             model.CreateTime = dt;
             model.Ranks = _dal.GetMaxRank() + 1;

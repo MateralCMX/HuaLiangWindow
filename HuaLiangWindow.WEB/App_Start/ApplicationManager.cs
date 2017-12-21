@@ -13,45 +13,32 @@ namespace HuaLiangWindow.WEB
         #region 权限信息
         /// <summary>
         /// 平台后台登录
-        /// 可以登录后台系统
         /// </summary>
         public const string Permissions_AdminLogin = "AdminLogin";
         /// <summary>
         /// 用户信息操作
-        /// 可以在后台增加用户的信息
-        /// 可以对所有用户的信息进行修改
-        /// 可以对所有用户的信息进行删除
         /// </summary>
         public const string Permissions_UserOperation = "UserOperation";
         /// <summary>
         /// 权限信息操作
-        /// 可以在增加权限的信息
-        /// 可以对权限的信息进行修改
-        /// 可以对权限的信息进行删除
         /// </summary>
         public const string Permissions_PermissionsOperation = "PermissionsOperation";
         /// <summary>
         /// 用户组信息操作
-        /// 可以对所有用户的用户组进行设置
-        /// 可以对用户组信息进行权限设置
-        /// 可以新增用户组信息
-        /// 可以删除用户组信息
         /// </summary>
         public const string Permissions_UserGroupOperation = "UserGroupOperation";
         /// <summary>
         /// 商品信息操作
-        /// 可以添加商品信息
-        /// 可以修改商品信息
-        /// 可以删除商品信息
         /// </summary>
         public const string Permissions_ProductOperation = "ProductOperation";
         /// <summary>
         /// 商品类型信息操作
-        /// 可以添加商品类型信息
-        /// 可以修改商品类型信息
-        /// 可以删除商品类型信息
         /// </summary>
         public const string Permissions_ProductTypeOperation = "ProductTypeOperation";
+        /// <summary>
+        /// 工厂类型信息操作
+        /// </summary>
+        public const string Permissions_FactoryTypeOperation = "FactoryTypeOperation";
         #endregion
         /// <summary>
         /// 保存上传文件地址

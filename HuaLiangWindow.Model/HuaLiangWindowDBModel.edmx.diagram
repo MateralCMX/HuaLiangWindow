@@ -18,6 +18,8 @@
         <AssociationConnector Association="HuaLiangWindowDBModel.FK_T_Token_T_User" />
         <AssociationConnector Association="HuaLiangWindowDBModel.T_UserGroupPermissions" />
         <AssociationConnector Association="HuaLiangWindowDBModel.T_UserGroupUser" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_FactoryType" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_FactoryType" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

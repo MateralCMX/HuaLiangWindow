@@ -191,6 +191,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\API\ApiBaseController.cs" />
+    <Compile Include="Controllers\API\FactoryTypeController.cs" />
     <Compile Include="Controllers\API\UserGroupController.cs" />
     <Compile Include="Controllers\API\PermissionsController.cs" />
     <Compile Include="Controllers\API\UserController.cs" />
@@ -204,6 +205,7 @@
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Backstage\CSS\Base.css" />
+    <Content Include="Backstage\CSS\Factory\FactoryType.css" />
     <Content Include="Backstage\CSS\System\Permissions.css" />
     <Content Include="Backstage\CSS\System\Index.css" />
     <Content Include="Backstage\CSS\System\UserGroup.css" />
@@ -222,6 +224,7 @@
     <Content Include="Backstage\Images\Home\Helper\订单管理.png" />
     <Content Include="Backstage\Images\Home\Helper\财务报表.png" />
     <Content Include="Backstage\Images\PicError.png" />
+    <Content Include="Backstage\View\Factory\FactoryType.html" />
     <Content Include="Backstage\View\System\Permissions.html" />
     <Content Include="Backstage\View\System\Index.html" />
     <Content Include="Backstage\View\System\UserGroup.html" />
@@ -328,6 +331,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Backstage\Scripts\Factory\FactoryType.ts" />
     <TypeScriptCompile Include="Backstage\Scripts\System\Permissions.ts" />
     <TypeScriptCompile Include="Backstage\Scripts\System\Index.ts" />
     <TypeScriptCompile Include="Backstage\Scripts\System\UserGroup.ts" />
