@@ -28,18 +28,9 @@ namespace HuaLiangWindow.Backstage {
             MDMa.AddEvent("BtnAdd", "click", UserPage.BtnAddEvent_Click);
             MDMa.AddEvent("BtnSave", "click", this.BtnSaveEvent_Click);
             MDMa.AddEvent("BtnDelete", "click", this.BtnDeleteEvent_Click);
-            //MDMa.AddEvent("BtnSaveUserGroup", "click", this.BtnSaveUserGroupEvent_Click);
-            MDMa.AddEvent("InputTrueName", "invalid", function (e: Event) {
-                let element = e.target as HTMLInputElement;
-                let setting: InvalidOptionsModel = new InvalidOptionsModel();
-                setting.Max = "长度不能超过" + element.maxLength;
-                setting.Required = "不能为空";
-                common.InputInvalidEvent_Invalid(e, setting);
-            });
+            MDMa.AddEvent("BtnUserGroupSearch", "click", this.BtnUserGroupSearchEvent_Click);
             MDMa.AddEvent("InputNickName", "invalid", function (e: Event) {
-                let element = e.target as HTMLInputElement;
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
-                setting.Max = "长度不能超过" + element.maxLength;
                 setting.Required = "不能为空";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
@@ -48,6 +39,7 @@ namespace HuaLiangWindow.Backstage {
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Max = "长度不能超过" + element.maxLength;
                 setting.Required = "不能为空";
+                setting.Pattern = "只可使用英文和数字";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
             MDMa.AddEvent("InputMobile", "invalid", function (e: Event) {
@@ -55,6 +47,7 @@ namespace HuaLiangWindow.Backstage {
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Max = "长度不能超过" + element.maxLength;
                 setting.Required = "不能为空";
+                setting.Pattern = "格式错误";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
             MDMa.AddEvent("InputEmail", "invalid", function (e: Event) {
@@ -62,12 +55,27 @@ namespace HuaLiangWindow.Backstage {
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Max = "长度不能超过" + element.maxLength;
                 setting.Required = "不能为空";
+                setting.Pattern = "邮箱格式不正确";
+                common.InputInvalidEvent_Invalid(e, setting);
+            });
+            MDMa.AddEvent("InputTrueName", "invalid", function (e: Event) {
+                let element = e.target as HTMLInputElement;
+                let setting: InvalidOptionsModel = new InvalidOptionsModel();
+                setting.Max = "长度不能超过" + element.maxLength;
+                setting.Required = "不能为空";
+                setting.Pattern = "请填写正确的中文真实姓名";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
             MDMa.AddEvent("InputWeChatWorkUserID", "invalid", function (e: Event) {
                 let element = e.target as HTMLInputElement;
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Max = "长度不能超过" + element.maxLength;
+                setting.Required = "不能为空";
+                common.InputInvalidEvent_Invalid(e, setting);
+            });
+            MDMa.AddEvent("SearchUserGroupName", "invalid", function (e: Event) {
+                let element = e.target as HTMLInputElement;
+                let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Required = "不能为空";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
@@ -119,6 +127,9 @@ namespace HuaLiangWindow.Backstage {
                     let UserName = document.createElement("td");
                     UserName.textContent = listM[i]["UserName"];
                     Item.appendChild(UserName);
+                    let WeChatWorkUserID = document.createElement("td");
+                    WeChatWorkUserID.textContent = listM[i]["WeChatWorkUserID"];
+                    Item.appendChild(WeChatWorkUserID);
                     let IfEnable = document.createElement("td");
                     IfEnable.textContent = listM[i]["IfEnable"] ? "启用" : "禁用";
                     Item.appendChild(IfEnable);
@@ -297,24 +308,17 @@ namespace HuaLiangWindow.Backstage {
          */
         private static BtnSetUserGroupEvent_Click(e: MouseEvent) {
             let BtnElement = e.target as HTMLButtonElement;
+            UserPage.PageData.ID = BtnElement.dataset.id;
             BtnElement.disabled = true;
             let url = "api/User/GetUserGroupInfoByUserID";
             let data = {
-                UserID: BtnElement.dataset.id
+                UserID: UserPage.PageData.ID
             };
             let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 let UserGroupList = MDMa.$("UserGroupList");
                 UserGroupList.innerHTML = "";
                 for (var i = 0; i < resM["Data"]["length"]; i++) {
-                    let li = document.createElement("li");
-                    let text = document.createTextNode(resM["Data"][i]["Name"]);
-                    let button = document.createElement("button");
-                    MDMa.AddClass(button, "btn btn-danger btn-xs");
-                    button.textContent = "移除";
-                    button.dataset.id = resM["Data"][i]["ID"];
-                    MDMa.AddEvent(button, "click", UserPage.RemoveUserGroupBtnEvent);
-                    li.appendChild(text);
-                    li.appendChild(button);
+                    let li = UserPage.GetUserGroupItem(resM["Data"][i]);
                     UserGroupList.appendChild(li);
                 }
                 $('#UserGroupModal').modal('toggle');
@@ -328,10 +332,27 @@ namespace HuaLiangWindow.Backstage {
             common.SendGetAjax(url, data, SFun, FFun, CFun);
         }
         /**
+         * 获得用户组单项Element
+         * @param item
+         */
+        private static GetUserGroupItem(item): HTMLLIElement {
+            let li = document.createElement("li");
+            let text = document.createTextNode(item["Name"]);
+            let button = document.createElement("button");
+            MDMa.AddClass(button, "btn btn-danger btn-xs");
+            button.textContent = "移除";
+            button.dataset.id = item["ID"];
+            MDMa.AddEvent(button, "click", UserPage.RemoveUserGroupBtnEvent);
+            li.appendChild(text);
+            li.appendChild(button);
+            return li;
+        }
+        /**
          * 查询用户组按钮
          * @param e
          */
-        private static BtnUserGroupSearchEvent_Click(e: MouseEvent) {
+        private BtnUserGroupSearchEvent_Click(e: MouseEvent) {
+            common.ClearErrorMessage();
             let SearchUserGroupForm = document.forms["SearchUserGroupForm"] as HTMLFormElement;
             if (!MTMa.IsNullOrUndefined(SearchUserGroupForm) && SearchUserGroupForm.checkValidity()) {
                 let BtnElement = e.target as HTMLButtonElement;
@@ -341,6 +362,32 @@ namespace HuaLiangWindow.Backstage {
                     Name: MDMa.GetInputValue("SearchUserGroupName")
                 };
                 let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                    let UserGroupDataTable = MDMa.$("UserGroupDataTable") as HTMLTableSectionElement;
+                    UserGroupDataTable.innerHTML = "";
+                    let listM = resM["Data"] as Array<Object>;
+                    for (let i = 0; i < listM.length; i++) {
+                        let Item = document.createElement("tr");
+                        let ID = document.createElement("td");
+                        ID.textContent = (i + 1).toString();
+                        let Name = document.createElement("td");
+                        Name.textContent = listM[i]["Name"];
+                        let Operation = document.createElement("td");
+                        let OperationBtnGroup = document.createElement("div");
+                        MDMa.AddClass(OperationBtnGroup, "btn-group");
+                        let SetUserGroupBtn = document.createElement("button");
+                        MDMa.AddClass(SetUserGroupBtn, "btn btn-primary btn-xs");
+                        SetUserGroupBtn.setAttribute("type", "button");
+                        SetUserGroupBtn.textContent = "添加";
+                        MDMa.AddEvent(SetUserGroupBtn, "click", UserPage.AddUserGroupBtnEvent);
+                        SetUserGroupBtn.dataset.id = listM[i]["ID"];
+                        SetUserGroupBtn.dataset.name = listM[i]["Name"];
+                        OperationBtnGroup.appendChild(SetUserGroupBtn);
+                        Operation.appendChild(OperationBtnGroup);
+                        Item.appendChild(ID);
+                        Item.appendChild(Name);
+                        Item.appendChild(Operation);
+                        UserGroupDataTable.appendChild(Item);
+                    }
                     console.log(resM);
                 };
                 let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
@@ -353,62 +400,62 @@ namespace HuaLiangWindow.Backstage {
             }
         }
         /**
-         * 移除职务按钮事件
+         * 移除用户组按钮事件
          * @param e 触发对象
          */
         public static RemoveUserGroupBtnEvent(e: MouseEvent) {
-            //let EditBtn = e.target as HTMLButtonElement;
-            //let postID = EditBtn.dataset["id"];
-            //let url: string = "api/UserUserGroup/RemoveUserGroup";
-            //let data = {
-            //    UserID: UserPage.PageData.EditID,
-            //    UserGroupID: postID
-            //};
-            //let SFun = function (resM: Object) {
-            //    if (resM["ResultType"] == 0) {
-            //        UserPage.GetViewUserUserGroupInfoByUserID();
-            //    }
-            //    else {
-            //        common.ShowMessage("移除失败:" + resM["Message"], 0, "UserGroupMessageBox");
-            //    }
-            //};
-            //let EFun = function (xhr: XMLHttpRequest, resM: Object) {
-            //    if (xhr.status == 403) {
-            //        common.ShowMessage("操作失败,您的权限不足", 3);
-            //    }
-            //};
-            //let CFun = function (resM: Object) {
-            //};
-            //common.SendAjax(url, data, SFun, EFun, CFun);
+            let BtnElement = e.target as HTMLButtonElement;
+            BtnElement.textContent = "移除中......";
+            BtnElement.disabled = true;
+            let UserGroupID = BtnElement.dataset["id"];
+            let url: string = "api/User/RemoveUserGroup";
+            let data = {
+                UserID: UserPage.PageData.ID,
+                UserGroupID: UserGroupID
+            };
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.parentElement.parentElement.removeChild(BtnElement.parentElement);
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"]);
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.textContent = "移除";
+                BtnElement.disabled = false;
+            };
+            common.SendPostAjax(url, data, SFun, FFun, CFun);
         }
         /**
-         * 添加职务按钮事件
+         * 添加用户组按钮事件
          * @param e 触发对象
          */
         public static AddUserGroupBtnEvent(e: MouseEvent) {
-            //let EditBtn = e.target as HTMLButtonElement;
-            //let postID = EditBtn.dataset["id"];
-            //let url: string = "api/UserUserGroup/AddUserGroup";
-            //let data = {
-            //    UserID: UserPage.PageData.EditID,
-            //    UserGroupID: postID
-            //};
-            //let SFun = function (resM: Object) {
-            //    if (resM["ResultType"] == 0) {
-            //        UserPage.GetViewUserUserGroupInfoByUserID();
-            //    }
-            //    else {
-            //        common.ShowMessage("添加失败:" + resM["Message"], 0, "UserGroupMessageBox");
-            //    }
-            //};
-            //let EFun = function (xhr: XMLHttpRequest, resM: Object) {
-            //    if (xhr.status == 403) {
-            //        common.ShowMessage("操作失败,您的权限不足", 3);
-            //    }
-            //};
-            //let CFun = function (resM: Object) {
-            //};
-            //common.SendAjax(url, data, SFun, EFun, CFun);
+            let BtnElement = e.target as HTMLButtonElement;
+            BtnElement.textContent = "添加中......";
+            BtnElement.disabled = true;
+            let UserGroupID = BtnElement.dataset["id"];
+            let UserGroupName = BtnElement.dataset["name"];
+            let url: string = "api/User/AddUserGroup";
+            let data = {
+                UserID: UserPage.PageData.ID,
+                UserGroupID: UserGroupID
+            };
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                let UserGroupList = MDMa.$("UserGroupList");
+                let li = UserPage.GetUserGroupItem({
+                    ID: UserGroupID,
+                    Name: UserGroupName
+                });
+                UserGroupList.appendChild(li);
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"]);
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.textContent = "添加";
+                BtnElement.disabled = false;
+            };
+            common.SendPostAjax(url, data, SFun, FFun, CFun);
         }
     }
     /**

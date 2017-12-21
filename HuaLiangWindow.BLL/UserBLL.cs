@@ -288,7 +288,7 @@ namespace HuaLiangWindow.BLL
             T_User userM = _dal.GetDBModelInfoByID(userID);
             Guid[] userGroupIds = (from m in userM.T_UserGroup
                                    where !m.IfDelete && m.IfEnable
-                                 select m.ID).ToArray();
+                                   select m.ID).ToArray();
             PermissionsGroupModel permissionsMs = _permissionsBLL.GetHasEnablePermissionsInfoByUserGroupID(userGroupIds, PermissionsTypesEnum.Menu);
             return permissionsMs;
         }
@@ -346,6 +346,69 @@ namespace HuaLiangWindow.BLL
                                    select m.ID).ToArray();
             List<V_UserGroup> listM = _dal.GetUserGroupViewInfoByIDs(userGroupIDs);
             return listM;
+        }
+        /// <summary>
+        /// 添加一个用户组
+        /// </summary>
+        /// <param name="userID">用户唯一标识</param>
+        /// <param name="userGroupID">用户组唯一标识</param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ApplicationException"></exception>
+        public void AddUserGroup(Guid userID, Guid userGroupID)
+        {
+            T_User userM = _dal.GetDBModelInfoByID(userID);
+            if (userM != null)
+            {
+                T_UserGroup userGroupM = _dal.GetUserGroupInfoByID(userGroupID);
+                if (userGroupM != null)
+                {
+                    if (userM.T_UserGroup.Where(m => m.ID == userGroupID).FirstOrDefault() == null)
+                    {
+                        userM.T_UserGroup.Add(userGroupM);
+                        _dal.SaveChange();
+                    }
+                    else
+                    {
+                        throw new ApplicationException("已拥有该用户组");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("用户组不存在");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("用户不存在");
+            }
+        }
+        /// <summary>
+        /// 移除一个用户组
+        /// </summary>
+        /// <param name="userID">用户唯一标识</param>
+        /// <param name="userGroupID">用户组唯一标识</param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ApplicationException"></exception>
+        public void RemoveUserGroup(Guid userID, Guid userGroupID)
+        {
+            T_User userM = _dal.GetDBModelInfoByID(userID);
+            if (userM != null)
+            {
+                T_UserGroup userGroupM = userM.T_UserGroup.Where(m => m.ID == userGroupID).FirstOrDefault();
+                if (userGroupM != null)
+                {
+                    userM.T_UserGroup.Remove(userGroupM);
+                    _dal.SaveChange();
+                }
+                else
+                {
+                    throw new ApplicationException("该用户无此用户组");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("用户不存在");
+            }
         }
         #endregion
         #region 私有方法

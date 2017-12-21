@@ -146,6 +146,16 @@ namespace HuaLiangWindow.BLL
             }
             _dal.SaveChange();
         }
+        /// <summary>
+        /// 根据名称获得用户组信息
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns>用户组信息</returns>
+        public List<V_UserGroup> GetUserGroupInfoByName(string name)
+        {
+            List<V_UserGroup> listM = _dal.GetUserGroupInfoByName(name);
+            return listM;
+        }
         #endregion
         #region 私有方法
         /// <summary>

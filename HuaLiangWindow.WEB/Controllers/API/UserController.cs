@@ -231,5 +231,51 @@ namespace HuaLiangWindow.WEB.Controllers.API
                 return MResultModel.GetFailResultM(ex.Message);
             }
         }
+        /// <summary>
+        /// 添加一个用户组
+        /// </summary>
+        /// <param name="model">修改用户组模型</param>
+        /// <returns>修改结果</returns>
+        [HttpPost]
+        [Route("AddUserGroup")]
+        public MResultModel AddUserGroup(EditUserGroupUserInModel model)
+        {
+            try
+            {
+                _bll.AddUserGroup(model.UserID, model.UserGroupID);
+                return MResultModel.GetSuccessResultM("添加成功");
+            }
+            catch (ArgumentException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+            catch (ApplicationException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+        }
+        /// <summary>
+        /// 移除一个用户组
+        /// </summary>
+        /// <param name="model">修改用户组模型</param>
+        /// <returns>修改结果</returns>
+        [HttpPost]
+        [Route("RemoveUserGroup")]
+        public MResultModel RemoveUserGroup(EditUserGroupUserInModel model)
+        {
+            try
+            {
+                _bll.RemoveUserGroup(model.UserID, model.UserGroupID);
+                return MResultModel.GetSuccessResultM("移除成功");
+            }
+            catch (ArgumentException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+            catch (ApplicationException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+        }
     }
 }

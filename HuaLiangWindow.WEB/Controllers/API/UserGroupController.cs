@@ -47,6 +47,18 @@ namespace HuaLiangWindow.WEB.Controllers.API
             return MResultModel<V_UserGroup>.GetSuccessResultM(resM, "查询成功");
         }
         /// <summary>
+        /// 根据名称获得用户组信息
+        /// </summary>
+        /// <param name="Name">名称</param>
+        /// <returns>用户组信息</returns>
+        [HttpGet]
+        [Route("GetUserGroupInfoByName")]
+        public MResultModel GetUserGroupInfoByName(string Name)
+        {
+            List<V_UserGroup> resM = _bll.GetUserGroupInfoByName(Name);
+            return MResultModel<List<V_UserGroup>>.GetSuccessResultM(resM, "查询成功");
+        }
+        /// <summary>
         /// 添加用户组
         /// </summary>
         /// <param name="model">操作对象</param>

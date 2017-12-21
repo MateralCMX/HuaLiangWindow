@@ -311,14 +311,14 @@ namespace HuaLiangWindow.Backstage {
             };
             let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 PermissionsPage.GetPermissionsInfoByType();
-                $('#EditModal').modal('toggle');
+                $('#DeleteModal').modal('toggle');
             };
             let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"]);
             };
             let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 BtnElement.textContent = "删除";
                 BtnElement.disabled = false;
-                common.ShowMessageBox(resM["Message"]);
             };
             common.SendPostAjax(url, data, SFun, FFun, CFun);
         }

@@ -71,5 +71,17 @@ namespace HuaLiangWindow.DAL
         {
             return _DB.T_Permissions.Where(m => m.ID == ID).FirstOrDefault();
         }
+        /// <summary>
+        /// 根据名称获得用户组信息
+        /// </summary>
+        /// <param name="Name">名称</param>
+        /// <returns>用户组信息</returns>
+        public List<V_UserGroup> GetUserGroupInfoByName(string name)
+        {
+            List<V_UserGroup> listM = (from m in _DB.V_UserGroup
+                                       where m.Name.Contains(name)
+                                       select m).ToList();
+            return listM;
+        }
     }
 }

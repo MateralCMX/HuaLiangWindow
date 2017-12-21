@@ -61,6 +61,7 @@
                     <th>邮箱</th>
                     <th>手机号码</th>
                     <th>用户名</th>
+                    <th>企业微信账户</th>
                     <th>启用/禁用</th>
                     <th>操作</th>
                 </tr>
@@ -98,28 +99,28 @@
                 <div class="modal-body">
                     <form id="InputForm">
                         <div class="form-group">
-                            <label class="control-label" for="InputTrueName">真实姓名</label>
-                            <input type="text" class="form-control" id="InputTrueName" placeholder="真实姓名" maxlength="50" required>
+                            <label class="control-label" for="InputTrueName">真实姓名*</label>
+                            <input type="text" class="form-control" id="InputTrueName" maxlength="50" placeholder="真实姓名" required pattern="^[\u4E00-\u9FA5]+$">
                             <span class="help-block"></span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="InputNickName">昵称</label>
-                            <input type="text" class="form-control" id="InputNickName" placeholder="昵称" maxlength="50" required>
+                            <label class="control-label" for="InputNickName">昵称*</label>
+                            <input type="text" class="form-control" id="InputNickName" maxlength="50" placeholder="昵称" required>
                             <span class="help-block"></span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="InputUserName">用户名</label>
-                            <input type="text" class="form-control" id="InputUserName" placeholder="用户名" maxlength="50" required>
+                            <label class="control-label" for="InputMobile">手机号码*</label>
+                            <input type="text" class="form-control" id="InputMobile" maxlength="11" placeholder="手机号码" required pattern="^(13|14|15|18|17)\d{9}$">
                             <span class="help-block"></span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="InputMobile">手机号码</label>
-                            <input type="text" class="form-control" id="InputMobile" placeholder="手机号码" maxlength="11" required>
+                            <label class="control-label" for="InputEmail">邮箱*</label>
+                            <input type="email" class="form-control" id="InputEmail" maxlength="100" placeholder="电子邮件地址" required pattern="^\w+@\w+\.\w+$">
                             <span class="help-block"></span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="InputEmail">邮箱</label>
-                            <input type="text" class="form-control" id="InputEmail" placeholder="邮箱" maxlength="100" required>
+                            <label class="control-label" for="InputUserName">用户名*</label>
+                            <input type="text" class="form-control" id="InputUserName" maxlength="50" placeholder="用户名" required pattern="^[a-zA-Z\d]+$">
                             <span class="help-block"></span>
                         </div>
                         <div class="form-group">
@@ -169,6 +170,7 @@
                                         <button id="BtnUserGroupSearch" class="btn btn-default" type="button">搜索</button>
                                     </span>
                                 </div>
+                                <span class="help-block"></span>
                             </div>
                         </form>
                         <table class="table table-hover">
@@ -184,7 +186,6 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="BtnSaveUserGroup" type="button" class="btn btn-primary">保存</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>
