@@ -53,6 +53,7 @@ namespace HuaLiangWindow.BLL
                 {
                     userM.IfEnable = model.IfEnable;
                     userM.Name = model.Name;
+                    userM.Remark = model.Remark;
                     _dal.SaveChange();
                 }
                 else
