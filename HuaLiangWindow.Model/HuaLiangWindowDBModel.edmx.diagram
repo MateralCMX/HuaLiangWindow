@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d760153db23f469e8647db44a32a1a12" Name="Diagram1" >
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_ApplicationLog" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Permissions" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Token" Width="1.5" PointX="3" PointY="3.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_User" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_UserGroup" Width="1.5" PointX="3" PointY="0.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_Permissions" Width="1.5" PointX="5.75" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_User" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_UserGroup" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="false" />
+        <AssociationConnector Association="HuaLiangWindowDBModel.FK_T_Permissions_T_Permissions" />
+        <AssociationConnector Association="HuaLiangWindowDBModel.FK_T_Token_T_User" />
+        <AssociationConnector Association="HuaLiangWindowDBModel.T_UserGroupPermissions" />
+        <AssociationConnector Association="HuaLiangWindowDBModel.T_UserGroupUser" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
