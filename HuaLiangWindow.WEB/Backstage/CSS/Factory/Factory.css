@@ -1,1 +1,9 @@
-﻿
+﻿ol {
+    padding: 0;
+    margin: 0;
+}
+
+    ol li {
+        margin-bottom: 10px;
+        margin-left: 30px;
+    }

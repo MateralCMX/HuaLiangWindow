@@ -19,6 +19,7 @@ namespace HuaLiangWindow.Model
         {
             this.T_Token = new HashSet<T_Token>();
             this.T_UserGroup = new HashSet<T_UserGroup>();
+            this.T_Factory = new HashSet<T_Factory>();
         }
     
         public System.Guid ID { get; set; }
@@ -41,5 +42,7 @@ namespace HuaLiangWindow.Model
         public virtual ICollection<T_Token> T_Token { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_UserGroup> T_UserGroup { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_Factory> T_Factory { get; set; }
     }
 }

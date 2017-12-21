@@ -47,6 +47,25 @@ namespace HuaLiangWindow.WEB.Controllers.API
             return MResultModel<V_Factory>.GetSuccessResultM(resM, "查询成功");
         }
         /// <summary>
+        /// 根据工厂ID获得工厂绑定账户列表
+        /// </summary>
+        /// <param name="ID">唯一标识</param>
+        /// <returns>工厂绑定账户信息</returns>
+        [HttpGet]
+        [Route("GetUsrViewInfoByFactoryID")]
+        public MResultModel GetUsrViewInfoByFactoryID(Guid ID)
+        {
+            try
+            {
+                List<V_User> resM = _bll.GetUsrViewInfoByFactoryID(ID);
+                return MResultModel<List<V_User>>.GetSuccessResultM(resM, "查询成功");
+            }
+            catch (ArgumentException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+        }
+        /// <summary>
         /// 添加工厂
         /// </summary>
         /// <param name="model">操作对象</param>
@@ -102,6 +121,54 @@ namespace HuaLiangWindow.WEB.Controllers.API
                 return MResultModel.GetSuccessResultM("删除成功");
             }
             catch (ArgumentException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+        }
+        /// <summary>
+        /// 添加一个用户
+        /// </summary>
+        /// <param name="model">修改用户模型</param>
+        /// <returns>修改结果</returns>
+        [HttpPost]
+        [Route("AddUser")]
+        [PermissionsCode(ApplicationManager.Permissions_FactoryOperation)]
+        public MResultModel AddUser(EditUserUserInModel model)
+        {
+            try
+            {
+                _bll.AddUser(model.FactoryID, model.UserID);
+                return MResultModel.GetSuccessResultM("添加成功");
+            }
+            catch (ArgumentException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+            catch (ApplicationException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+        }
+        /// <summary>
+        /// 移除一个用户
+        /// </summary>
+        /// <param name="model">修改用户模型</param>
+        /// <returns>修改结果</returns>
+        [HttpPost]
+        [Route("RemoveUser")]
+        [PermissionsCode(ApplicationManager.Permissions_FactoryOperation)]
+        public MResultModel RemoveUser(EditUserUserInModel model)
+        {
+            try
+            {
+                _bll.RemoveUser(model.FactoryID, model.UserID);
+                return MResultModel.GetSuccessResultM("移除成功");
+            }
+            catch (ArgumentException ex)
+            {
+                return MResultModel.GetFailResultM(ex.Message);
+            }
+            catch (ApplicationException ex)
             {
                 return MResultModel.GetFailResultM(ex.Message);
             }

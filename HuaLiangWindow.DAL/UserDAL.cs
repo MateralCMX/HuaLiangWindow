@@ -30,17 +30,30 @@ namespace HuaLiangWindow.DAL
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns>用户信息</returns>
-        public V_User GetUserInfoByUserName(string userName)
+        public V_User GetUserViewInfoByUserName(string userName)
         {
             V_User resM = _DB.V_User.Where(m => m.UserName == userName).FirstOrDefault();
             return resM;
+        }
+        /// <summary>
+        /// 根据真实姓名获得用户信息
+        /// </summary>
+        /// <param name="trueName">真实姓名</param>
+        /// <returns>用户信息</returns>
+        public List<V_User> GetUserViewInfoByTrueName(string trueName)
+        {
+            List<V_User> listM = (from m in _DB.V_User
+                                  where m.TrueName.Contains(trueName)
+                                  orderby m.CreateTime
+                                  select m).ToList();
+            return listM;
         }
         /// <summary>
         /// 根据邮箱获得用户信息
         /// </summary>
         /// <param name="email">邮箱</param>
         /// <returns>用户信息</returns>
-        public V_User GetUserInfoByEmail(string email)
+        public V_User GetUserViewInfoByEmail(string email)
         {
             V_User resM = _DB.V_User.Where(m => m.Email == email).FirstOrDefault();
             return resM;
@@ -50,7 +63,7 @@ namespace HuaLiangWindow.DAL
         /// </summary>
         /// <param name="mobile">手机号码</param>
         /// <returns>用户信息</returns>
-        public V_User GetUserInfoByMobile(string mobile)
+        public V_User GetUserViewInfoByMobile(string mobile)
         {
             V_User resM = _DB.V_User.Where(m => m.Mobile == mobile).FirstOrDefault();
             return resM;
@@ -60,7 +73,7 @@ namespace HuaLiangWindow.DAL
         /// </summary>
         /// <param name="openID">OpenID</param>
         /// <returns>用户信息</returns>
-        public V_User GetUserInfoByWeChatOpenID(string openID)
+        public V_User GetUserViewInfoByWeChatOpenID(string openID)
         {
             V_User resM = _DB.V_User.Where(m => m.WeChatOpenID == openID).FirstOrDefault();
             return resM;
@@ -70,7 +83,7 @@ namespace HuaLiangWindow.DAL
         /// </summary>
         /// <param name="weChatWorkUserID">企业微信UserID</param>
         /// <returns>用户信息</returns>
-        public V_User GetUserInfoByWeChatWorkUserID(string weChatWorkUserID)
+        public V_User GetUserViewInfoByWeChatWorkUserID(string weChatWorkUserID)
         {
             V_User resM = _DB.V_User.Where(m => m.WeChatWorkUserID == weChatWorkUserID).FirstOrDefault();
             return resM;
@@ -87,7 +100,7 @@ namespace HuaLiangWindow.DAL
         /// <param name="ifEnable">启用标识</param>
         /// <param name="pageM">分页对象</param>
         /// <returns>用户信息</returns>
-        public List<V_User> GetUserInfoByWhere(string userName,string mobile,string weChatWorkUserID,string email,string trueName,string nickName,bool? ifEnable, MPagingModel pageM)
+        public List<V_User> GetUserViewInfoByWhere(string userName,string mobile,string weChatWorkUserID,string email,string trueName,string nickName,bool? ifEnable, MPagingModel pageM)
         {
             Expression<Func<V_User, bool>> expression = m => true;
 
@@ -144,6 +157,18 @@ namespace HuaLiangWindow.DAL
         public List<V_UserGroup> GetUserGroupViewInfoByIDs(Guid[] ids)
         {
             return _DB.V_UserGroup.Where(m => ids.Contains(m.ID)).ToList();
+        }
+        /// <summary>
+        /// 根据用户唯一标识组获得用户信息
+        /// </summary>
+        /// <param name="ids">唯一标识组</param>
+        /// <returns>用户信息</returns>
+        public List<V_User> GetUserViewInfoByIDs(Guid[] ids)
+        {
+            List<V_User> listM = (from m in _DB.V_User
+                                  where ids.Contains(m.ID)
+                                  select m).ToList();
+            return listM;
         }
     }
 }

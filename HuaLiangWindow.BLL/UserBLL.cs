@@ -198,7 +198,7 @@ namespace HuaLiangWindow.BLL
             model.WeChatWorkUserID = null;
             if (!string.IsNullOrEmpty(model.WeChatOpenID))
             {
-                V_User userM = _dal.GetUserInfoByWeChatOpenID(model.WeChatOpenID);
+                V_User userM = _dal.GetUserViewInfoByWeChatOpenID(model.WeChatOpenID);
                 if (userM == null)
                 {
                     string msg = "";
@@ -329,7 +329,7 @@ namespace HuaLiangWindow.BLL
         /// <returns>用户信息</returns>
         public List<V_User> GetUserInfoByWhere(string userName, string mobile, string weChatWorkUserID, string email, string trueName, string nickName, bool? ifEnable, MPagingModel pageM)
         {
-            return _dal.GetUserInfoByWhere(userName, mobile, weChatWorkUserID, email, trueName, nickName, ifEnable, pageM);
+            return _dal.GetUserViewInfoByWhere(userName, mobile, weChatWorkUserID, email, trueName, nickName, ifEnable, pageM);
         }
         /// <summary>
         /// 根据用户唯一标识获取用户组信息
@@ -408,6 +408,34 @@ namespace HuaLiangWindow.BLL
                 throw new ArgumentException("用户不存在");
             }
         }
+        /// <summary>
+        /// 根据手机号或真实姓名或用户名获得用户信息
+        /// </summary>
+        /// <param name="mobile">手机号码</param>
+        /// <param name="trueName">真实姓名</param>
+        /// <param name="userName">用户名</param>
+        /// <returns>用户信息</returns>
+        public List<V_User> GetUserViewInfoByMobileOrTrueNameOrUserNameOrEmail(string mobile, string trueName, string userName, string email)
+        {
+            List<V_User> listM = new List<V_User>();
+            V_User tempM = _dal.GetUserViewInfoByMobile(mobile);
+            if (tempM != null)
+            {
+                listM.Add(tempM);
+            }
+            tempM = _dal.GetUserViewInfoByUserName(userName);
+            if (tempM != null)
+            {
+                listM.Add(tempM);
+            }
+            tempM = _dal.GetUserViewInfoByEmail(email);
+            if (tempM != null)
+            {
+                listM.Add(tempM);
+            }
+            listM.AddRange(_dal.GetUserViewInfoByTrueName(trueName));
+            return listM.Distinct().ToList();
+        }
         #endregion
         #region 私有方法
         /// <summary>
@@ -451,7 +479,7 @@ namespace HuaLiangWindow.BLL
                 V_User temp;
                 if (!string.IsNullOrEmpty(model.UserName))
                 {
-                    temp = _dal.GetUserInfoByUserName(model.UserName);
+                    temp = _dal.GetUserViewInfoByUserName(model.UserName);
                     if (temp != null)
                     {
                         msg += "用户名已被占用，";
@@ -459,7 +487,7 @@ namespace HuaLiangWindow.BLL
                 }
                 if (!string.IsNullOrEmpty(model.Email))
                 {
-                    temp = _dal.GetUserInfoByEmail(model.Email);
+                    temp = _dal.GetUserViewInfoByEmail(model.Email);
                     if (temp != null)
                     {
                         msg += "邮箱已被占用，";
@@ -467,7 +495,7 @@ namespace HuaLiangWindow.BLL
                 }
                 if (!string.IsNullOrEmpty(model.Mobile))
                 {
-                    temp = _dal.GetUserInfoByMobile(model.Mobile);
+                    temp = _dal.GetUserViewInfoByMobile(model.Mobile);
                     if (temp != null)
                     {
                         msg += "手机号码已被占用，";
@@ -494,7 +522,7 @@ namespace HuaLiangWindow.BLL
                 V_User temp;
                 if (!string.IsNullOrEmpty(model.UserName))
                 {
-                    temp = _dal.GetUserInfoByUserName(model.UserName);
+                    temp = _dal.GetUserViewInfoByUserName(model.UserName);
                     if (temp != null && temp.ID != model.ID)
                     {
                         msg += "用户名已被占用，";
@@ -502,7 +530,7 @@ namespace HuaLiangWindow.BLL
                 }
                 if (!string.IsNullOrEmpty(model.Email))
                 {
-                    temp = _dal.GetUserInfoByEmail(model.Email);
+                    temp = _dal.GetUserViewInfoByEmail(model.Email);
                     if (temp != null && temp.ID != model.ID)
                     {
                         msg += "邮箱已被占用，";
@@ -510,7 +538,7 @@ namespace HuaLiangWindow.BLL
                 }
                 if (!string.IsNullOrEmpty(model.Mobile))
                 {
-                    temp = _dal.GetUserInfoByMobile(model.Mobile);
+                    temp = _dal.GetUserViewInfoByMobile(model.Mobile);
                     if (temp != null && temp.ID != model.ID)
                     {
                         msg += "手机号码已被占用，";

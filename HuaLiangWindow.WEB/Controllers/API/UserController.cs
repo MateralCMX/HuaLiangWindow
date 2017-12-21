@@ -71,6 +71,18 @@ namespace HuaLiangWindow.WEB.Controllers.API
             return MResultModel<V_User>.GetSuccessResultM(userM, "查询成功");
         }
         /// <summary>
+        /// 根据查询字符串获得用户信息
+        /// </summary>
+        /// <param name="SearchTxt">查询字符串</param>
+        /// <returns>用户信息</returns>
+        [HttpGet]
+        [Route("GetUserInfoBySearchTxt")]
+        public MResultModel GetUserInfoBySearchTxt(string SearchTxt)
+        {
+            List<V_User> resM = _bll.GetUserViewInfoByMobileOrTrueNameOrUserNameOrEmail(SearchTxt, SearchTxt, SearchTxt, SearchTxt);
+            return MResultModel<List<V_User>>.GetSuccessResultM(resM, "查询成功");
+        }
+        /// <summary>
         /// 根据用户唯一标识获得用户组信息
         /// </summary>
         /// <param name="ID">用户唯一标识</param>

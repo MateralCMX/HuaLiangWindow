@@ -21,4 +21,18 @@ namespace HuaLiangWindow.Model
         /// </summary>
         public string LoginUserToken { get; set; }
     }
+    /// <summary>
+    /// 修改用户用户输入模型
+    /// </summary>
+    public class EditUserUserInModel : BaseQueryModel
+    {
+        /// <summary>
+        /// 工厂唯一标识
+        /// </summary>
+        public Guid FactoryID { get; set; }
+        /// <summary>
+        /// 用户唯一标识
+        /// </summary>
+        public Guid UserID { get; set; }
+    }
 }

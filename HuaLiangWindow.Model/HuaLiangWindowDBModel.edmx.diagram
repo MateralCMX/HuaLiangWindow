@@ -5,24 +5,25 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d760153db23f469e8647db44a32a1a12" Name="Diagram1" >
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_ApplicationLog" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Permissions" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Token" Width="1.5" PointX="3" PointY="4.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_User" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_UserGroup" Width="1.5" PointX="3" PointY="0.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_Permissions" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_User" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_UserGroup" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_ApplicationLog" Width="1.5" PointX="2.75" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Permissions" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Token" Width="1.5" PointX="7.5" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_User" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_UserGroup" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_Permissions" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_User" Width="1.5" PointX="4.75" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_UserGroup" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="false" />
         <AssociationConnector Association="HuaLiangWindowDBModel.FK_T_Permissions_T_Permissions" />
         <AssociationConnector Association="HuaLiangWindowDBModel.FK_T_Token_T_User" />
         <AssociationConnector Association="HuaLiangWindowDBModel.T_UserGroupPermissions" />
         <AssociationConnector Association="HuaLiangWindowDBModel.T_UserGroupUser" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_FactoryType" Width="1.5" PointX="2.75" PointY="2.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_FactoryType" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Factory" Width="1.5" PointX="5" PointY="2.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_Factory" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_FactoryType" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_FactoryType" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.T_Factory" Width="1.5" PointX="3" PointY="1.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuaLiangWindowDBModel.V_Factory" Width="1.5" PointX="6.75" PointY="5.75" IsExpanded="false" />
         <AssociationConnector Association="HuaLiangWindowDBModel.FK_T_Factory_T_FactoryType" />
+        <AssociationConnector Association="HuaLiangWindowDBModel.T_FactoryUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -126,5 +126,4 @@ namespace HuaLiangWindow.Model
         /// </summary>
         public Guid UserGroupID { get; set; }
     }
-
 }

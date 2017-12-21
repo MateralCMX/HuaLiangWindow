@@ -47,6 +47,14 @@
           <Property Name="IfDelete" Type="bit" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_FactoryUser">
+          <Key>
+            <PropertyRef Name="FK_Factory" />
+            <PropertyRef Name="FK_User" />
+          </Key>
+          <Property Name="FK_Factory" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FK_User" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_Permissions">
           <Key>
             <PropertyRef Name="ID" />
@@ -233,6 +241,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_FactoryUser_T_Factory">
+          <End Role="T_Factory" Type="Self.T_Factory" Multiplicity="1" />
+          <End Role="T_FactoryUser" Type="Self.T_FactoryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Factory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_FactoryUser">
+              <PropertyRef Name="FK_Factory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_FactoryUser_T_User">
+          <End Role="T_User" Type="Self.T_User" Multiplicity="1" />
+          <End Role="T_FactoryUser" Type="Self.T_FactoryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_FactoryUser">
+              <PropertyRef Name="FK_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_Permissions_T_Permissions">
           <End Role="T_Permissions" Type="Self.T_Permissions" Multiplicity="0..1" />
           <End Role="T_Permissions1" Type="Self.T_Permissions" Multiplicity="*" />
@@ -310,6 +342,7 @@
           <EntitySet Name="T_ApplicationLog" EntityType="Self.T_ApplicationLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Factory" EntityType="Self.T_Factory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_FactoryType" EntityType="Self.T_FactoryType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_FactoryUser" EntityType="Self.T_FactoryUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Permissions" EntityType="Self.T_Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Token" EntityType="Self.T_Token" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_User" EntityType="Self.T_User" Schema="dbo" store:Type="Tables" />
@@ -383,6 +416,14 @@
             <End Role="T_FactoryType" EntitySet="T_FactoryType" />
             <End Role="T_Factory" EntitySet="T_Factory" />
           </AssociationSet>
+          <AssociationSet Name="FK_T_FactoryUser_T_Factory" Association="Self.FK_T_FactoryUser_T_Factory">
+            <End Role="T_Factory" EntitySet="T_Factory" />
+            <End Role="T_FactoryUser" EntitySet="T_FactoryUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_FactoryUser_T_User" Association="Self.FK_T_FactoryUser_T_User">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_FactoryUser" EntitySet="T_FactoryUser" />
+          </AssociationSet>
           <AssociationSet Name="FK_T_Permissions_T_Permissions" Association="Self.FK_T_Permissions_T_Permissions">
             <End Role="T_Permissions" EntitySet="T_Permissions" />
             <End Role="T_Permissions1" EntitySet="T_Permissions" />
@@ -445,6 +486,10 @@
           <AssociationSet Name="FK_T_Factory_T_FactoryType" Association="HuaLiangWindowDBModel.FK_T_Factory_T_FactoryType">
             <End Role="T_FactoryType" EntitySet="T_FactoryType" />
             <End Role="T_Factory" EntitySet="T_Factory" />
+          </AssociationSet>
+          <AssociationSet Name="T_FactoryUser" Association="HuaLiangWindowDBModel.T_FactoryUser">
+            <End Role="T_Factory" EntitySet="T_Factory" />
+            <End Role="T_User" EntitySet="T_User" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="sysdiagrams">
@@ -518,6 +563,7 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="T_Token" Relationship="HuaLiangWindowDBModel.FK_T_Token_T_User" FromRole="T_User" ToRole="T_Token" />
           <NavigationProperty Name="T_UserGroup" Relationship="HuaLiangWindowDBModel.T_UserGroupUser" FromRole="T_User" ToRole="T_UserGroup" />
+          <NavigationProperty Name="T_Factory" Relationship="HuaLiangWindowDBModel.T_FactoryUser" FromRole="T_User" ToRole="T_Factory" />
         </EntityType>
         <EntityType Name="T_UserGroup">
           <Key>
@@ -661,6 +707,7 @@
           <Property Name="IfDelete" Type="Boolean" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="T_FactoryType" Relationship="HuaLiangWindowDBModel.FK_T_Factory_T_FactoryType" FromRole="T_Factory" ToRole="T_FactoryType" />
+          <NavigationProperty Name="T_User" Relationship="HuaLiangWindowDBModel.T_FactoryUser" FromRole="T_Factory" ToRole="T_User" />
         </EntityType>
         <EntityType Name="V_Factory">
           <Key>
@@ -690,6 +737,10 @@
               <PropertyRef Name="FK_FactoryType" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="T_FactoryUser">
+          <End Type="HuaLiangWindowDBModel.T_Factory" Role="T_Factory" Multiplicity="*" />
+          <End Type="HuaLiangWindowDBModel.T_User" Role="T_User" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -894,6 +945,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="T_FactoryUser" TypeName="HuaLiangWindowDBModel.T_FactoryUser" StoreEntitySet="T_FactoryUser">
+            <EndProperty Name="T_User">
+              <ScalarProperty Name="ID" ColumnName="FK_User" />
+            </EndProperty>
+            <EndProperty Name="T_Factory">
+              <ScalarProperty Name="ID" ColumnName="FK_Factory" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

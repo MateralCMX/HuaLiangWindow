@@ -27,6 +27,7 @@ namespace HuaLiangWindow.Backstage {
             MDMa.AddEvent("BtnAdd", "click", FactoryPage.BtnAddEvent_Click);
             MDMa.AddEvent("BtnSave", "click", this.BtnSaveEvent_Click);
             MDMa.AddEvent("BtnDelete", "click", this.BtnDeleteEvent_Click);
+            MDMa.AddEvent("BtnUserSearch", "click", this.BtnUserSearchEvent_Click);
             MDMa.AddEvent("InputName", "invalid", function (e: Event) {
                 let element = e.target as HTMLInputElement;
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
@@ -38,6 +39,12 @@ namespace HuaLiangWindow.Backstage {
                 let element = e.target as HTMLInputElement;
                 let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Max = "长度不能超过" + element.maxLength;
+                setting.Required = "不能为空";
+                common.InputInvalidEvent_Invalid(e, setting);
+            });
+            MDMa.AddEvent("SearchSearchTxt", "invalid", function (e: Event) {
+                let element = e.target as HTMLInputElement;
+                let setting: InvalidOptionsModel = new InvalidOptionsModel();
                 setting.Required = "不能为空";
                 common.InputInvalidEvent_Invalid(e, setting);
             });
@@ -107,6 +114,13 @@ namespace HuaLiangWindow.Backstage {
                     let Operation = document.createElement("td");
                     let OperationBtnGroup = document.createElement("div");
                     MDMa.AddClass(OperationBtnGroup, "btn-group");
+                    let SetUserBtn = document.createElement("button");
+                    MDMa.AddClass(SetUserBtn, "btn btn-primary");
+                    SetUserBtn.setAttribute("type", "button");
+                    SetUserBtn.textContent = "设置用户";
+                    MDMa.AddEvent(SetUserBtn, "click", FactoryPage.BtnSetUserEvent_Click);
+                    SetUserBtn.dataset.id = listM[i]["ID"];
+                    OperationBtnGroup.appendChild(SetUserBtn);
                     let EditBtn = document.createElement("button");
                     MDMa.AddClass(EditBtn, "btn btn-default");
                     EditBtn.setAttribute("type", "button");
@@ -240,6 +254,166 @@ namespace HuaLiangWindow.Backstage {
             };
             let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                 BtnElement.textContent = "删除";
+                BtnElement.disabled = false;
+            };
+            common.SendPostAjax(url, data, SFun, FFun, CFun);
+        }
+        /**
+         * 设置用户信息按钮单击事件
+         * @param e
+         */
+        private static BtnSetUserEvent_Click(e: MouseEvent) {
+            let BtnElement = e.target as HTMLButtonElement;
+            FactoryPage.PageData.ID = BtnElement.dataset.id;
+            BtnElement.disabled = true;
+            let url = "api/Factory/GetUsrViewInfoByFactoryID";
+            let data = {
+                ID: FactoryPage.PageData.ID
+            };
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                let UserList = MDMa.$("UserList");
+                UserList.innerHTML = "";
+                for (var i = 0; i < resM["Data"]["length"]; i++) {
+                    let li = FactoryPage.GetUserItem(resM["Data"][i]);
+                    UserList.appendChild(li);
+                }
+                $('#UserModal').modal('toggle');
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"]);
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.disabled = false;
+            };
+            common.SendGetAjax(url, data, SFun, FFun, CFun);
+        }
+        /**
+         * 获得用户单项Element
+         * @param item
+         */
+        private static GetUserItem(item): HTMLLIElement {
+            let li = document.createElement("li");
+            let text = document.createTextNode(item["TrueName"] + "(" + item["Mobile"] + ")");
+            let button = document.createElement("button");
+            MDMa.AddClass(button, "btn btn-danger btn-xs");
+            button.textContent = "移除";
+            button.dataset.id = item["ID"];
+            MDMa.AddEvent(button, "click", FactoryPage.RemoveUserBtnEvent);
+            li.appendChild(text);
+            li.appendChild(button);
+            return li;
+        }
+        /**
+         * 查询用户按钮
+         * @param e
+         */
+        private BtnUserSearchEvent_Click(e: MouseEvent) {
+            common.ClearErrorMessage();
+            let SearchUserForm = document.forms["SearchUserForm"] as HTMLFormElement;
+            if (!MTMa.IsNullOrUndefined(SearchUserForm) && SearchUserForm.checkValidity()) {
+                let BtnElement = e.target as HTMLButtonElement;
+                BtnElement.disabled = true;
+                let url = "api/User/GetUserInfoBySearchTxt";
+                let data = {
+                    SearchTxt: MDMa.GetInputValue("SearchSearchTxt")
+                };
+                let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                    let UserDataTable = MDMa.$("UserDataTable") as HTMLTableSectionElement;
+                    UserDataTable.innerHTML = "";
+                    let listM = resM["Data"] as Array<Object>;
+                    for (let i = 0; i < listM.length; i++) {
+                        let Item = document.createElement("tr");
+                        let NickName = document.createElement("td");
+                        NickName.textContent = listM[i]["NickName"];
+                        Item.appendChild(NickName);
+                        let TrueName = document.createElement("td");
+                        TrueName.textContent = listM[i]["TrueName"];
+                        Item.appendChild(TrueName);
+                        let Mobile = document.createElement("td");
+                        Mobile.textContent = listM[i]["Mobile"];
+                        Item.appendChild(Mobile);
+                        let Operation = document.createElement("td");
+                        let OperationBtnGroup = document.createElement("div");
+                        MDMa.AddClass(OperationBtnGroup, "btn-group");
+                        let SetUserBtn = document.createElement("button");
+                        MDMa.AddClass(SetUserBtn, "btn btn-primary btn-xs");
+                        SetUserBtn.setAttribute("type", "button");
+                        SetUserBtn.textContent = "添加";
+                        MDMa.AddEvent(SetUserBtn, "click", FactoryPage.AddUserBtnEvent);
+                        SetUserBtn.dataset.id = listM[i]["ID"];
+                        SetUserBtn.dataset.name = listM[i]["TrueName"];
+                        SetUserBtn.dataset.mobile = listM[i]["Mobile"];
+                        OperationBtnGroup.appendChild(SetUserBtn);
+                        Operation.appendChild(OperationBtnGroup);
+                        Item.appendChild(Operation);
+                        UserDataTable.appendChild(Item);
+                    }
+                };
+                let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                    common.ShowMessageBox(resM["Message"]);
+                };
+                let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                    BtnElement.disabled = false;
+                };
+                common.SendGetAjax(url, data, SFun, FFun, CFun);
+            }
+        }
+        /**
+         * 移除用户按钮事件
+         * @param e 触发对象
+         */
+        public static RemoveUserBtnEvent(e: MouseEvent) {
+            let BtnElement = e.target as HTMLButtonElement;
+            BtnElement.textContent = "移除中......";
+            BtnElement.disabled = true;
+            let UserID = BtnElement.dataset["id"];
+            let url: string = "api/Factory/RemoveUser";
+            let data = {
+                FactoryID: FactoryPage.PageData.ID,
+                UserID: UserID
+            };
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.parentElement.parentElement.removeChild(BtnElement.parentElement);
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"]);
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.textContent = "移除";
+                BtnElement.disabled = false;
+            };
+            common.SendPostAjax(url, data, SFun, FFun, CFun);
+        }
+        /**
+         * 添加用户按钮事件
+         * @param e 触发对象
+         */
+        public static AddUserBtnEvent(e: MouseEvent) {
+            let BtnElement = e.target as HTMLButtonElement;
+            BtnElement.textContent = "添加中......";
+            BtnElement.disabled = true;
+            let UserID = BtnElement.dataset["id"];
+            let TrueName = BtnElement.dataset["name"];
+            let Mobile = BtnElement.dataset["mobile"];
+            let url: string = "api/Factory/AddUser";
+            let data = {
+                FactoryID: FactoryPage.PageData.ID,
+                UserID: UserID
+            };
+            let SFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                let UserList = MDMa.$("UserList");
+                let li = FactoryPage.GetUserItem({
+                    ID: UserID,
+                    TrueName: TrueName,
+                    Mobile: Mobile,
+                });
+                UserList.appendChild(li);
+            };
+            let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                common.ShowMessageBox(resM["Message"]);
+            };
+            let CFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
+                BtnElement.textContent = "添加";
                 BtnElement.disabled = false;
             };
             common.SendPostAjax(url, data, SFun, FFun, CFun);

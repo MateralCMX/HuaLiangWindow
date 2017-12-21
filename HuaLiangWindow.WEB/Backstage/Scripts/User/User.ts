@@ -386,7 +386,6 @@ namespace HuaLiangWindow.Backstage {
                         Item.appendChild(Operation);
                         UserGroupDataTable.appendChild(Item);
                     }
-                    console.log(resM);
                 };
                 let FFun = function (resM: Object, xhr: XMLHttpRequest, state: number) {
                     common.ShowMessageBox(resM["Message"]);

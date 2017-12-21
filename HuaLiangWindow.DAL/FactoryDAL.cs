@@ -41,5 +41,14 @@ namespace HuaLiangWindow.DAL
             }
             return listM;
         }
+        /// <summary>
+        /// 根据唯一标识获得用户信息
+        /// </summary>
+        /// <param name="id">唯一标识</param>
+        /// <returns>用户信息</returns>
+        public T_User GetUserInfoByID(Guid id)
+        {
+            return _DB.T_User.Where(m => m.ID == id).FirstOrDefault();
+        }
     }
 }

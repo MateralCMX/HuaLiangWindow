@@ -14,6 +14,12 @@ namespace HuaLiangWindow.Model
     
     public partial class T_Factory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public T_Factory()
+        {
+            this.T_User = new HashSet<T_User>();
+        }
+    
         public System.Guid ID { get; set; }
         public string Name { get; set; }
         public System.Guid FK_FactoryType { get; set; }
@@ -23,5 +29,7 @@ namespace HuaLiangWindow.Model
         public System.DateTime CreateTime { get; set; }
     
         public virtual T_FactoryType T_FactoryType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_User> T_User { get; set; }
     }
 }
